@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.miyon;
 
 import edu.pdx.cs410J.lang.Human;
+import groovy.json.JsonOutput;
 
 import java.util.ArrayList;
                                                                                     
@@ -43,11 +44,28 @@ public class Student extends Human {
    * Returns a <code>String</code> that describes this                              
    * <code>Student</code>.                                                          
    */                                                                               
+
   public String toString() {
     int numClasses = this.classes.size();
-    return this.getName() + " has a GPA of " + this.gpa + " and is taking " + numClasses + " class"
-    + (numClasses != 1 ? "es" : "")
-            + (numClasses != 0 ? "." : ": ");
+    return this.getName() + " has a GPA of " + this.gpa
+            + " and is taking " + numClasses + " class"
+            + (numClasses != 1 ? "es" : "")
+            + (numClasses == 0 ? '.' : ": " + listOfClasses() + ".")
+            + "  ";
+  }
+
+  private String listOfClasses(){
+    StringBuilder sb = new StringBuilder();
+    int numClasses = this.classes.size();
+    sb.append(String.join(", ", this.classes.subList(0, numClasses - 1)));
+    if (numClasses > 1) {
+      if (numClasses > 2) {
+        sb.append(",");
+      }
+      sb.append(" and ");
+    }
+    sb.append(this.classes.get(numClasses - 1));
+    return sb.toString();
   }
 
   /**

@@ -19,18 +19,21 @@ public class StudentTest
   private Student createStudentNamed(String name) {
     return new Student(name, new ArrayList<>(), 0.0, "Doesn't matter");
   }
+
   @Test
   public void studentNamedPatIsNamedPat() {
     String name = "Pat";
     var pat = createStudentNamed(name);
     assertThat(pat.getName(), equalTo(name));
   }
+
   @Test
   public void toStringContainsStudentName() {
     String name = "Pat";
     Student pat = createStudentNamed(name);
     assertThat(pat.toString(), containsString(name));
   }
+
   @Test
   public void toStringContainsGpa() {
     double gpa = 3.76;
@@ -77,10 +80,28 @@ public class StudentTest
     assertThat(student.toString(), containsString("and is taking 0 classes."));
   }
 
-  @Ignore
+  @Test
+  public void studentTaking1ClassHasNoComma() {
+    ArrayList<String> classes = new ArrayList<>();
+    classes.add("English");
+    Student student = new Student("Name", classes, 3.64, "doesn't matter");
+
+    assertThat(student.toString(), containsString("class: English."));
+  }
+
+  @Test
+  public void studentTaking2ClassHasNoComma() {
+    ArrayList<String> classes = new ArrayList<>();
+    classes.add("English");
+    classes.add("History");
+    Student student = new Student("Name", classes, 3.64, "doesn't matter");
+
+    assertThat(student.toString(), containsString("classes: English and History."));
+  }
+
   @Test
   public void daveToStringHasAllClassNames() {
     Student dave = createDaveStudent();
-    assertThat(dave.toString(), containsString("classes: Algorithms, Operating Systems, and Java."));
+    assertThat(dave.toString(), containsString("classes: Algorithm, Operating Systems, and Java."));
   }
 }

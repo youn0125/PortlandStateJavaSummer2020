@@ -11,7 +11,7 @@ public class Student extends Human {
 
   private final double gpa;
   private final ArrayList<String> classes;
-                                                                                    
+
   /**                                                                               
    * Creates a new <code>Student</code>                                             
    *                                                                                
@@ -44,7 +44,10 @@ public class Student extends Human {
    * <code>Student</code>.                                                          
    */                                                                               
   public String toString() {
-    return this.getName() + " has a GPA of " + this.gpa + "and is taking " + this.classes.size() + " classes:";
+    int numClasses = this.classes.size();
+    return this.getName() + " has a GPA of " + this.gpa + " and is taking " + numClasses + " class"
+    + (numClasses != 1 ? "es" : "")
+            + (numClasses != 0 ? "." : ": ");
   }
 
   /**

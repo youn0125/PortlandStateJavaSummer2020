@@ -59,4 +59,28 @@ public class StudentTest
     Student dave = createDaveStudent();
     assertThat(dave.toString(), containsString("and is taking 3 classes"));
   }
+
+  @Test
+  public void studentTaking1ClassHasASingularWord() {
+    ArrayList<String> classes = new ArrayList<>();
+    classes.add("English");
+    Student student = new Student("Name", classes, 3.64, "doesn't matter");
+
+    assertThat(student.toString(), containsString("and is taking 1 class:"));
+  }
+
+  @Test
+  public void studentTaking0ClassHasNoColonInSentence() {
+    ArrayList<String> classes = new ArrayList<>();
+    Student student = new Student("Name", classes, 3.64, "doesn't matter");
+
+    assertThat(student.toString(), containsString("and is taking 0 classes."));
+  }
+
+  @Ignore
+  @Test
+  public void daveToStringHasAllClassNames() {
+    Student dave = createDaveStudent();
+    assertThat(dave.toString(), containsString("classes: Algorithms, Operating Systems, and Java."));
+  }
 }

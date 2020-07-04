@@ -2,6 +2,8 @@ package edu.pdx.cs410J.miyon;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -11,23 +13,46 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * You'll need to update these unit tests as you build out you program.
  */
 public class PhoneCallTest {
+  private PhoneCall createPhoneCall() {
+    String callee = "123-456-7890";
+    String caller = "234-567-8901";
+    String start = "01/23/2020 09:12";
+    String end = "01/23/2020 10:12";
+    return new PhoneCall(caller, callee, start, end);
+  }
 
-  @Test(expected = UnsupportedOperationException.class)
+  @Test
   public void getStartTimeStringNeedsToBeImplemented() {
-    PhoneCall call = new PhoneCall();
-    call.getStartTimeString();
+    PhoneCall call = createPhoneCall();
+    String start = "01/23/2020 09:12";
+    assertThat(call.getStartTimeString(), equalTo(start));
+  }
+
+  @Test
+  public void getEndTimeStringNeedsToBeImplemented() {
+    PhoneCall call = createPhoneCall();
+    String end = "01/23/2020 10:12";
+    assertThat(call.getEndTimeString(), equalTo(end));
   }
 
   @Test
   public void initiallyAllPhoneCallsHaveTheSameCallee() {
-    PhoneCall call = new PhoneCall();
-    assertThat(call.getCallee(), containsString("not implemented"));
+    PhoneCall call = createPhoneCall();
+    String callee = "123-456-7890";
+    assertThat(call.getCallee(), equalTo(callee));
+  }
+
+  @Test
+  public void customerPhoneCallToCallee() {
+    PhoneCall call = createPhoneCall();
+    String caller = "234-567-8901";
+    assertThat(call.getCaller(), equalTo(caller));
   }
 
   @Test
   public void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
-    PhoneCall call = new PhoneCall();
+    PhoneCall call = new PhoneCall(null,null, null, null);
     assertThat(call.getStartTime(), is(nullValue()));
   }
-  
+
 }

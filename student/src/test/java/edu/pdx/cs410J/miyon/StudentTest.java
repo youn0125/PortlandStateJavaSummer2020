@@ -51,7 +51,7 @@ public class StudentTest
 
   private Student createDaveStudent() {
     ArrayList<String> classes = new ArrayList<>();
-    classes.add("Algorithm");
+    classes.add("Algorithms");
     classes.add("Operating Systems");
     classes.add("Java");
     return new Student("Dave", classes, 3.64, "male");
@@ -102,6 +102,6 @@ public class StudentTest
   @Test
   public void daveToStringHasAllClassNames() {
     Student dave = createDaveStudent();
-    assertThat(dave.toString(), containsString("classes: Algorithm, Operating Systems, and Java."));
+    assertThat(dave.toString(), containsString("classes: Algorithms, Operating Systems, and Java."));
   }
 }

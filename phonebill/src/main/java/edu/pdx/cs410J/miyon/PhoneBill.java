@@ -5,9 +5,16 @@ import edu.pdx.cs410J.AbstractPhoneBill;
 import java.util.Collection;
 
 public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
+    private final String customer;
+
+    public PhoneBill(String customer) {
+        super();
+        this.customer = customer;
+    }
+
     @Override
     public String getCustomer() {
-        throw new UnsupportedOperationException("This method is not implemented yet");
+        return this.customer;
     }
 
     @Override

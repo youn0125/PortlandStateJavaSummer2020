@@ -3,13 +3,16 @@ package edu.pdx.cs410J.miyon;
 import edu.pdx.cs410J.AbstractPhoneBill;
 
 import java.util.Collection;
+import java.util.Vector;
 
 public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
     private final String customer;
+    private Vector<PhoneCall> phoneCalls;
 
     public PhoneBill(String customer) {
         super();
         this.customer = customer;
+        this.phoneCalls = new Vector<>();
     }
 
     @Override
@@ -19,11 +22,11 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 
     @Override
     public void addPhoneCall(PhoneCall phoneCall) {
-        throw new UnsupportedOperationException("This method is not implemented yet");
+        phoneCalls.add(phoneCall);
     }
 
     @Override
     public Collection<PhoneCall> getPhoneCalls() {
-        throw new UnsupportedOperationException("This method is not implemented yet");
+        return phoneCalls;
     }
 }

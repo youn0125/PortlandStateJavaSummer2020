@@ -14,11 +14,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class PhoneCallTest {
   private PhoneCall createPhoneCall() {
-    String callee = "123-456-7890";
     String caller = "234-567-8901";
-    String start = "01/23/2020 09:12";
-    String end = "01/23/2020 10:12";
-    return new PhoneCall(caller, callee, start, end);
+    String callee = "123-456-7890";
+    String startDate = "01/23/2020";
+    String startTime = "09:12";
+    String endDate = "01/23/2020";
+    String endTime = "10:12";
+    return new PhoneCall(caller, callee, startDate, startTime, endDate, endTime);
   }
 
   @Test
@@ -51,7 +53,7 @@ public class PhoneCallTest {
 
   @Test
   public void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
-    PhoneCall call = new PhoneCall(null,null, null, null);
+    PhoneCall call = new PhoneCall(null,null, null, null, null, null);
     assertThat(call.getStartTime(), is(nullValue()));
   }
 

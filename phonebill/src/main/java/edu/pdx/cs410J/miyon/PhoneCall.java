@@ -5,15 +5,19 @@ import edu.pdx.cs410J.AbstractPhoneCall;
 public class PhoneCall extends AbstractPhoneCall {
   private final String caller;
   private final String callee;
-  private final String start;
-  private final String end;
+  private final String startDate;
+  private final String startTime;
+  private final String endDate;
+  private final String endTime;
 
-  public PhoneCall(String caller, String callee, String start, String end) {
+  public PhoneCall(String caller, String callee, String startDate, String startTime, String endDate, String endTime) {
     super();
     this.caller = caller;
     this.callee = callee;
-    this.start = start;
-    this.end = end;
+    this.startDate = startDate;
+    this.startTime = startTime;
+    this.endDate = endDate;
+    this.endTime = endTime;
   }
   @Override
   public String getCaller() {
@@ -27,11 +31,11 @@ public class PhoneCall extends AbstractPhoneCall {
 
   @Override
   public String getStartTimeString() {
-    return this.start;
+    return this.startDate + " " + this.startTime;
   }
 
   @Override
   public String getEndTimeString() {
-    return this.end;
+    return this.endDate + " " + this.endTime;
   }
 }

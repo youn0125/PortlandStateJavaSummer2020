@@ -28,65 +28,72 @@ public class Project1IT extends InvokeMainTestCase {
      assertThat(result.getExitCode(), equalTo(1));
      assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
    }
-    /**
-     * Tests that invoking the main method with no arguments issues an error
-     */
+
     @Test
     public void testOneCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
-    private PhoneCall createPhoneCall() {
-        String callee = "123-456-7890";
-        String caller = "234-567-8901";
-        String start = "01/23/2020 09:12";
-        String end = "01/23/2020 10:12";
-        return new PhoneCall(caller, callee, start, end);
-    }
 
-    /**
-     * Tests that invoking the main method with no arguments issues an error
-     */
     @Test
     public void testTwoCommandLineArguments() {
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890");
-        assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
-    }
-    /**
-     * Tests that invoking the main method with no arguments issues an error
-     */
-    @Test
-    public void testThreeCommandLineArguments() {
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "234-567-8901");
-        assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
-    }
-    /**
-     * Tests that invoking the main method with no arguments issues an error
-     */
-    @Test
-    public void testFourCommandLineArguments() {
-        MainMethodResult result = invokeMain("Brian Griffin", "123-456-7890", "234-567-8901", "01/23/2020 09:12");
+        MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
-    /**
-     * Tests that invoking the main method with no arguments issues an error
-     */
     @Test
-    public void testFiveCommandLineArgumentsWithValidArgs() {
+    public void testThreeCommandLineArguments() {
+        MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+    }
+
+    @Test
+    public void testFourCommandLineArguments() {
+        MainMethodResult result = invokeMain("Brian Griffin",  "234-567-8901", "123-456-7890","01/23/2020 09:12");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+    }
+
+    @Test
+    public void testSevenCommandLineArgumentsWithValidArgsNoOption() {
         String customer = "Brian Griffin";
-        String callee = "123-456-7890";
         String caller = "234-567-8901";
-        String start = "01/23/2020 09:12";
-        String end = "01/23/2020 10:12";
-        MainMethodResult result = invokeMain(customer, callee, caller, start, end);
-        PhoneCall call = new PhoneCall(callee, caller, start, end);
+        String callee = "123-456-7890";
+        String startDate = "01/23/2020";
+        String startTime = "09:12";
+        String endDate = "01/23/2020";
+        String endTime = "10:12";
+        MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, endDate, endTime);
+        PhoneCall call = new PhoneCall(caller, callee, startDate, startTime, endDate, endTime);
         PhoneBill bill = new PhoneBill(customer);
         bill.addPhoneCall(call);
         assertThat (result.getTextWrittenToStandardOut(), containsString("Phone call is added to Phone bill"));
+    }
+    @Test
+    public void testFiveCommandLineArgumentsWithInvalidPNumber() {
+        String customer = "Brian Griffin";
+        String caller = "234-567-8901";
+        String callee = "1234567890";
+        String startDate = "01/23/2020";
+        String startTime = "09:12";
+        String endDate = "01/23/2020";
+        String endTime = "10:12";
+        MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, endDate, endTime);
+        assertThat (result.getTextWrittenToStandardError(), containsString("Check Phone number pattern"));
+    }
+    @Test
+    public void testFiveCommandLineArgumentsWithInvalidDate() {
+        String customer = "Brian Griffin";
+        String caller = "234-567-8901";
+        String callee = "123-456-7890";
+        String startDate = "01/23/20";
+        String startTime = "09:12";
+        String endDate = "01/23/2020";
+        String endTime = "10:12";
+        MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, endDate, endTime);
+        assertThat (result.getTextWrittenToStandardError(), containsString("Check date pattern"));
     }
 }

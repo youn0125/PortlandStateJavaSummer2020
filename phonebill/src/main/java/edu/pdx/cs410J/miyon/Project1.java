@@ -7,8 +7,15 @@ import java.util.regex.*;
  */
 public class Project1 {
 
+  /**
+   * Main program parses the command line, creates a
+   * <code>PhoneBill</code> and <code>PhoneCall</code>, adds the <code>PhoneCall</code> to the <code>PhoneBill</code>,
+   * and optionally prints a description of the <code>PhoneCall</code>
+   * by invoking its <code>toString</code> method.
+   */
   public static void main(String[] args) {
 
+    // Check options from command line
     boolean print = false;
     int optionNum = 0;
     if ( args.length > 0 && args[0].startsWith("-") ) {
@@ -30,6 +37,7 @@ public class Project1 {
       }
     }
 
+    //Check arguments from command line
     int argLength = args.length - optionNum;
     if ( argLength == 7) {
       int pCallstartIdx = optionNum+1;
@@ -62,11 +70,17 @@ public class Project1 {
     }
   }
 
-  private static void printErrorMessageAndExit(String message) {
+  /**
+   * Prints error message and exit the program
+   */
+  public static void printErrorMessageAndExit(String message) {
     System.err.println(message);
     System.exit(1);
   }
 
+  /**
+   * Prints README for this project and exit the program
+   */
   private static void printReadmeAndExit() {
     String readme = "This README is written by Mi Yon Kim and referred from Project1 AppClasses document.\n" +
             "Usage: java edu.pdx.cs410J.miyon.Project1 [options] <args>\n" +

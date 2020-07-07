@@ -113,18 +113,20 @@ public class Project1IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(0));
         assertThat(result.getTextWrittenToStandardOut(), containsString("Project1"));
     }
-    @Test(expected = IllegalArgumentException.class)
-    public void testSevenCommandLineArgumentsWithInvalidPNumber() {
+    @Test
+    public void testSevenCommandLineArgumentsWithInvalidCallerNumber() {
         String customer = "Brian Griffin";
-        String caller = "234-567-8901";
-        String callee = "1234567890";
+        String caller = "2345678901";
+        String callee = "123-456-7890";
         String startDate = "01/23/2020";
         String startTime = "09:12";
         String endDate = "01/23/2020";
         String endTime = "10:12";
         MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, endDate, endTime);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Caller number format is not valid"));
     }
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSevenCommandLineArgumentsWithInvalidDate() {
         String customer = "Brian Griffin";
         String caller = "234-567-8901";
@@ -134,9 +136,11 @@ public class Project1IT extends InvokeMainTestCase {
         String endDate = "01/23/2020";
         String endTime = "10:12";
         MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, endDate, endTime);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Start date format is not valid"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSevenCommandLineArgumentsWithInvalidTime() {
         String customer = "Brian Griffin";
         String caller = "234-567-8901";
@@ -146,5 +150,7 @@ public class Project1IT extends InvokeMainTestCase {
         String endDate = "01/23/2020";
         String endTime = "1012";
         MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, endDate, endTime);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("End time format is not valid"));
     }
 }

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.miyon;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class PhoneCallTest {
     assertThat(call.getCaller(), equalTo(caller));
   }
 
+  @Ignore
   @Test
   public void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
     PhoneCall call = new PhoneCall(null,null, null, null, null, null);

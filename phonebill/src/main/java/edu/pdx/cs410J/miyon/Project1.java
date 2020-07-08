@@ -1,6 +1,11 @@
 package edu.pdx.cs410J.miyon;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.regex.*;
+import java.util.stream.Collectors;
 
 /**
  * The main class for the CS410J Phone Bill Project
@@ -21,7 +26,12 @@ public class Project1 {
     if ( args.length > 0 && args[0].startsWith("-") ) {
       optionNum++;
       if ( args[0].equals("-README")) {
-        printReadmeAndExit();
+        try {
+          printReadmeAndExit();
+        } catch (IOException ie) {
+          System.out.println("IOException");
+        }
+
       }
       else if ( args[0].equals("-print")){
         print = true;
@@ -30,7 +40,11 @@ public class Project1 {
     if ( args.length > 1 && args[1].startsWith("-") ) {
       optionNum++;
       if ( args[0].equals("-README")) {
-        printReadmeAndExit();
+        try {
+          printReadmeAndExit();
+        } catch (IOException ie) {
+          System.out.println("IOException");
+        }
       }
       else if ( args[0].equals("-print")) {
         print = true;
@@ -81,20 +95,29 @@ public class Project1 {
   /**
    * Prints README for this project and exit the program
    */
-  private static void printReadmeAndExit() {
-    String readme = "This README is written by Mi Yon Kim and referred from Project1 AppClasses document.\n" +
-            "Usage: java edu.pdx.cs410J.miyon.Project1 [options] <args>\n" +
-            "args are (in this order):\n" +
-            "   customer: Person whose phone bill we’re modeling\n" +
-            "   callerNumber: Phone number of caller\n" +
-            "   calleeNumber: Phone number of person who was called\n" +
-            "   start: Date and time call began (24-hour time). These are two separate arguments.\n" +
-            "   end: Date and time call ended (24-hour time). These are two separate arguments.\n" +
-            "options are (options may appear in any order):\n" +
-            "   -print Prints a description of the new phone call\n" +
-            "   -README Prints a README for this project and exits\n" +
-            "Date and time should be in the format: mm/dd/yyyy hh:mm";
-    System.out.println(readme);
+//  private static void printReadmeAndExit() {
+//    String readme = "This README is written by Mi Yon Kim and referred from Project1 AppClasses document.\n" +
+//            "Usage: java edu.pdx.cs410J.miyon.Project1 [options] <args>\n" +
+//            "args are (in this order):\n" +
+//            "   customer: Person whose phone bill we’re modeling\n" +
+//            "   callerNumber: Phone number of caller\n" +
+//            "   calleeNumber: Phone number of person who was called\n" +
+//            "   start: Date and time call began (24-hour time). These are two separate arguments.\n" +
+//            "   end: Date and time call ended (24-hour time). These are two separate arguments.\n" +
+//            "options are (options may appear in any order):\n" +
+//            "   -print Prints a description of the new phone call\n" +
+//            "   -README Prints a README for this project and exits\n" +
+//            "Date and time should be in the format: mm/dd/yyyy hh:mm";
+//    System.out.println(readme);
+//    System.exit(0);
+//  }
+
+  private static void printReadmeAndExit() throws IOException {
+    InputStream readme = Project1.class.getResourceAsStream("README.txt");
+    BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
+    String AllLine = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+
+    System.out.println(AllLine);
     System.exit(0);
   }
 }

@@ -118,7 +118,7 @@ public class Project1IT extends InvokeMainTestCase {
         String readme = "-README";
         MainMethodResult result = invokeMain(readme);
         assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Project1"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("edu.pdx.cs410J.miyon.Project1"));
     }
     @Test
     public void testSevenCommandLineArgumentsWithInvalidCallerNumber() {

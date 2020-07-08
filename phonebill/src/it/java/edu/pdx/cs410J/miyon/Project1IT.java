@@ -72,6 +72,13 @@ public class Project1IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing end time"));
     }
     @Test
+    public void testEightCommandLineArguments() {
+        MainMethodResult result = invokeMain("Brian Griffin",  "234-567-8901", "123-456-7890","01/23/2020",
+                "09:12", "01/23/2020", "10:12", "cse");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("There are extraneous arguments"));
+    }
+    @Test
     public void testSevenCommandLineArgumentsWithValidArgsNoOption() {
         String customer = "Brian Griffin";
         String caller = "234-567-8901";

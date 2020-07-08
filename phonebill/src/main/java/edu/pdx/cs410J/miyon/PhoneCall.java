@@ -43,7 +43,6 @@ public class PhoneCall extends AbstractPhoneCall {
 
     if (!checkDatePattern(startDate)) {
       printErrorMessageAndExit("Start date format is not valid");
-      throw new IllegalArgumentException("Start date format is not valid");
     }
 
     if (!checkTimePattern(startTime)) {
@@ -98,7 +97,7 @@ public class PhoneCall extends AbstractPhoneCall {
   }
 
   /**
-   * @return a <code>boolean</code> of valid format of phone number.
+   * @return a <code>boolean</code> of validity of phone number.
    */
   private static boolean checkPNumberPatten(String pNumber) {
     String pattern = "(?:\\d{3}-){2}\\d{4}";
@@ -110,7 +109,7 @@ public class PhoneCall extends AbstractPhoneCall {
   }
 
   /**
-   * @return a <code>boolean</code> of valid format of date.
+   * @return a <code>boolean</code> of validity of date.
    */
   private static boolean checkDatePattern(String date) {
     String pattern = "^\\d{1,2}\\/\\d{1,2}\\/\\d{4}";
@@ -122,7 +121,7 @@ public class PhoneCall extends AbstractPhoneCall {
   }
 
   /**
-   * @return a <code>boolean</code> of valid format of time.
+   * @return a <code>boolean</code> of validity of time.
    */
   private static boolean checkTimePattern(String date) {
     String pattern = "^\\d{1,2}:\\d{1,2}";

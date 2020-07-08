@@ -33,7 +33,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
     }
 
     /**
-     * Adds a <code>PhoneCall</code> to <code>Vector<T></T></code> of phoneCall
+     * Adds a <code>PhoneCall</code> to <code>Vector<PhoneCall></code> of phoneCall
      */
     @Override
     public void addPhoneCall(PhoneCall phoneCall) {
@@ -41,7 +41,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
     }
 
     /**
-     * @return a <code>Collection<T></code> of phoneCalls
+     * @return a <code>Collection<PhoneCall></code> of phoneCalls
      */
     @Override
     public Collection<PhoneCall> getPhoneCalls() {

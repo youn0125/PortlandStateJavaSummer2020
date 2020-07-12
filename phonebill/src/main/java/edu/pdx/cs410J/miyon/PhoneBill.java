@@ -9,7 +9,7 @@ import java.util.Vector;
  * This class is represents a <code>PhoneBill</code>.
  */
 public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
-    private final String customer;
+    private String customer;
     private Vector<PhoneCall> phoneCalls;
 
     /**
@@ -46,5 +46,9 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
     @Override
     public Collection<PhoneCall> getPhoneCalls() {
         return phoneCalls;
+    }
+
+    public void setCustomer(String customer) {
+        this.customer = customer;
     }
 }

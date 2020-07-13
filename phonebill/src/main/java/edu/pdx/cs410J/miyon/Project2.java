@@ -1,6 +1,9 @@
 package edu.pdx.cs410J.miyon;
 
+import edu.pdx.cs410J.ParserException;
+
 import java.io.*;
+import java.util.Collection;
 import java.util.stream.Collectors;
 /**
  * The main class for the CS410J Phone Bill Project
@@ -22,71 +25,86 @@ public class Project2 {
         String fileName = "";
         PhoneBill bill = new PhoneBill("");
 
-        if ( args.length > 0 && args[0].startsWith("-") ) {
-            optionNum++;
-            if ( args[0].equals("-README")) {
+        if ( args.length > optionNum && args[optionNum].startsWith("-") ) {
+
+            if ( args[optionNum].equals("-README")) {
                 try {
                     printReadmeAndExit();
                 } catch (IOException ie) {
                     System.out.println("IOException");
                 }
             }
-            else if ( args[0].equals("-print")){
+            else if ( args[optionNum].equals("-print")){
                 print = true;
             }
-            else if ( args[0].equals("-textFile")){
+            else if ( args[optionNum].equals("-textFile")){
                 optionNum++;
-                fileName = args[1];
+                fileName = args[optionNum];
 
                 if (!withFileOption) {
-                    withFileOption(fileName);
+                    bill = parseTextFile(fileName);
+                    Collection<PhoneCall> calls = bill.getPhoneCalls();
+                    for ( PhoneCall call : calls) {
+                        System.out.println(call);
+                    }
                 }
                 withFileOption = true;
             }
+            optionNum++;
         }
-        if ( args.length > 1 && args[1].startsWith("-") ) {
+        if ( args.length > optionNum && args[optionNum].startsWith("-") ) {
             optionNum++;
-            if ( args[1].equals("-README")) {
+            if ( args[optionNum].equals("-README")) {
                 try {
                     printReadmeAndExit();
                 } catch (IOException ie) {
                     System.out.println("IOException");
                 }
             }
-            else if ( args[1].equals("-print")) {
+            else if ( args[optionNum].equals("-print")) {
                 print = true;
             }
-            else if ( args[1].equals("-textFile")){
+            else if ( args[optionNum].equals("-textFile")){
                 optionNum++;
-                fileName = args[2];
+                fileName = args[optionNum];
 
                 if (!withFileOption) {
-                    withFileOption(fileName);
+                    bill = parseTextFile(fileName);
+                    Collection<PhoneCall> calls = bill.getPhoneCalls();
+                    for ( PhoneCall call : calls) {
+                        System.out.println(call);
+                    }
                 }
                 withFileOption = true;
             }
+            optionNum++;
         }
-        if ( args.length > 2 && args[1].startsWith("-") ) {
-            optionNum++;
-            if ( args[2].equals("-README")) {
+        if ( args.length > optionNum && args[optionNum].startsWith("-") ) {
+
+            if ( args[optionNum].equals("-README")) {
                 try {
                     printReadmeAndExit();
                 } catch (IOException ie) {
                     System.out.println("IOException");
                 }
             }
-            else if ( args[2].equals("-print")) {
+            else if ( args[optionNum].equals("-print")) {
                 print = true;
             }
-            else if ( args[2].equals("-textFile")){
+            else if ( args[optionNum].equals("-textFile")){
                 optionNum++;
-                fileName = args[3];
+                fileName = args[optionNum];
 
                 if (!withFileOption) {
-                    withFileOption(fileName);
+                    bill = parseTextFile(fileName);
+                    Collection<PhoneCall> calls = bill.getPhoneCalls();
+                    for ( PhoneCall call : calls) {
+                        System.out.println(call);
+                    }
                 }
                 withFileOption = true;
             }
+            optionNum++;
         }
 
         //Check arguments from command line
@@ -94,15 +112,17 @@ public class Project2 {
         if ( argLength == 7) {
             int pCallstartIdx = optionNum+1;
 
-            bill.setCustomer(args[pCallstartIdx - 1]);
-            PhoneCall call = new PhoneCall(args[pCallstartIdx], args[pCallstartIdx+1],
-                    args[pCallstartIdx+2], args[pCallstartIdx+3], args[pCallstartIdx+4], args[pCallstartIdx+5]);  // Refer to one of Dave's classes so that we can be sure it is on the classpath
-            bill.addPhoneCall(call);
-            if (print) {
-                System.out.println(call);
+            if (args[pCallstartIdx - 1].equals(bill.getCustomer())) {
+                PhoneCall call = new PhoneCall(args[pCallstartIdx], args[pCallstartIdx+1],
+                        args[pCallstartIdx+2], args[pCallstartIdx+3], args[pCallstartIdx+4], args[pCallstartIdx+5]);  // Refer to one of Dave's classes so that we can be sure it is on the classpath
+                bill.addPhoneCall(call);
+                if (print) {
+                    System.out.println(call);
+                }
+                System.out.println("Phone call is added to Phone bill");
+            } else {
+                printErrorMessageAndExit("Customer doesn't match with textFile");
             }
-            System.out.println("Phone call is added to Phone bill");
-
         } else if (argLength == 0) {
             printErrorMessageAndExit("Missing command line arguments");
         } else if (argLength == 1) {
@@ -122,17 +142,22 @@ public class Project2 {
         }
     }
 
-    private static void withFileOption(String fileName) {
+    private static PhoneBill parseTextFile(String fileName) {
         try {
             File myFile = new File(fileName);
             if (myFile.createNewFile()) {
                 System.out.println("File is created!");
             } else {
                 System.out.println("File already exists.");
+                TextParser tp = new TextParser(myFile);
+                 return tp.parse();
             }
-        } catch (IOException e) {
+        } catch (IOException ioe) {
             System.out.println("IOException");
+        } catch (ParserException pe) {
+            System.out.println("ParserException");
         }
+        return null;
     }
 
     /**

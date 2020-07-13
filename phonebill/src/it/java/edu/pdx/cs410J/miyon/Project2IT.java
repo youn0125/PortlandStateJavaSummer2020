@@ -1,7 +1,13 @@
 package edu.pdx.cs410J.miyon;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import edu.pdx.cs410J.ParserException;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Vector;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -136,6 +142,25 @@ public class Project2IT extends InvokeMainTestCase {
         String fileName = "textFile2";
         MainMethodResult result = invokeMain(textFile, fileName);
         assertThat(result.getTextWrittenToStandardOut(), containsString("File"));
+    }
+
+    @Test
+    public void testParseTextFileOption() {
+        String textFile = "-textFile";
+        String fileName = "textFile2";
+        MainMethodResult result = invokeMain(textFile, fileName);
+        try {
+            File myFile = new File(fileName);
+            TextParser tp = new TextParser(myFile);
+            PhoneBill bill = tp.parse();
+            Collection<PhoneCall> calls = bill.getPhoneCalls();
+            for ( PhoneCall call : calls) {
+                assertThat (result.getTextWrittenToStandardOut(), containsString(call.toString()));
+            }
+        } catch (ParserException pe) {
+            System.out.println("ParserException");
+        }
+
     }
 
     @Test

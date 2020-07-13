@@ -53,7 +53,6 @@ public class Project2 {
             optionNum++;
         }
         if ( args.length > optionNum && args[optionNum].startsWith("-") ) {
-            optionNum++;
             if ( args[optionNum].equals("-README")) {
                 try {
                     printReadmeAndExit();
@@ -112,6 +111,8 @@ public class Project2 {
         if ( argLength == 7) {
             int pCallstartIdx = optionNum+1;
 
+            if ( !withFileOption)
+                bill.setCustomer(args[pCallstartIdx - 1]);
             if (args[pCallstartIdx - 1].equals(bill.getCustomer())) {
                 PhoneCall call = new PhoneCall(args[pCallstartIdx], args[pCallstartIdx+1],
                         args[pCallstartIdx+2], args[pCallstartIdx+3], args[pCallstartIdx+4], args[pCallstartIdx+5]);  // Refer to one of Dave's classes so that we can be sure it is on the classpath

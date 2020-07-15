@@ -54,7 +54,7 @@ public class PhoneCallTest {
 
   @Ignore
   @Test
-  public void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
+  public void forProject2ItIsOkayIfGetStartTimeReturnsNull() {
     PhoneCall call = new PhoneCall(null,null, null, null, null, null);
     assertThat(call.getStartTime(), is(nullValue()));
   }

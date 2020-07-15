@@ -1,5 +1,5 @@
-This README is written by Mi Yon Kim and referred from Project1 AppClasses document.
-Usage: java edu.pdx.cs410J.miyon.Project1 [options] <args>
+This README is written by Mi Yon Kim and referred from Project2 AppClasses document.
+Usage: java edu.pdx.cs410J.miyon.Project2 [options] <args>
 args are (in this order):
    customer: Person whose phone bill we’re modeling
    callerNumber: Phone number of caller

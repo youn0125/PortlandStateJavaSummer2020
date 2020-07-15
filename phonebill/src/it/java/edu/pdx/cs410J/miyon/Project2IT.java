@@ -141,7 +141,7 @@ public class Project2IT extends InvokeMainTestCase {
         String readme = "-README";
         MainMethodResult result = invokeMain(readme);
         assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("edu.pdx.cs410J.miyon.Project1"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("edu.pdx.cs410J.miyon.Project2"));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class Project2IT extends InvokeMainTestCase {
         String readme = "-README";
         MainMethodResult result = invokeMain(print, readme);
         assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("edu.pdx.cs410J.miyon.Project1"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("edu.pdx.cs410J.miyon.Project2"));
     }
 
 

@@ -2,7 +2,7 @@ package edu.pdx.cs410J.miyon;
 
 import edu.pdx.cs410J.AbstractPhoneCall;
 
-import static edu.pdx.cs410J.miyon.Project1.printErrorMessageAndExit;
+import static edu.pdx.cs410J.miyon.Project2.printErrorMessageAndExit;
 
 /**
  * This class is represents a <code>PhoneCall</code>.

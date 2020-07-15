@@ -269,7 +269,7 @@ public class Project2 {
      */
 
     private static void printReadmeAndExit() throws IOException {
-        InputStream readme = Project1.class.getResourceAsStream("README.txt");
+        InputStream readme = Project2.class.getResourceAsStream("README.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
         String AllLine = reader.lines().collect(Collectors.joining(System.lineSeparator()));
 

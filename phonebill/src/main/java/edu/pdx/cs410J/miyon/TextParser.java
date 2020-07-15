@@ -3,43 +3,58 @@ package edu.pdx.cs410J.miyon;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.PhoneBillParser;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 
 import static edu.pdx.cs410J.miyon.Project2.printErrorMessageAndExit;
 
+/**
+ * This class is represents a <code>TextParser</code>.
+ */
 public class TextParser implements PhoneBillParser<PhoneBill> {
-    private File myFile;
+    private final Reader reader;
 
-    TextParser(File myFile) {
-        this.myFile = myFile;
+    /**
+     * Creates a new <code>TextParser</code>
+     *
+     * @param reader
+     *        reader for text file
+     */
+    TextParser(Reader reader) {
+        this.reader = reader;
     }
-    public PhoneBill parse() throws ParserException {
 
+    /**
+     * @return a <code>PhoneBill</code> after reading the text file
+     */
+    @Override
+    public PhoneBill parse() throws ParserException {
+        BufferedReader br = new BufferedReader(this.reader);
         try {
-            Scanner myReader = new Scanner(myFile);
-            String customer = myReader.nextLine();
-            PhoneBill bill = new PhoneBill(customer);
-            while (myReader.hasNextLine()) {
-                String phoneCallStr = myReader.nextLine();
+            String customerName = br.readLine();
+            if ( customerName == null)
+                customerName = "";
+            PhoneBill bill = new PhoneBill(customerName);
+            String phoneCallStr = br.readLine();
+            while (phoneCallStr != null) {
                 String[] phoneCallArgs = phoneCallStr.split(" ");
                 if (phoneCallArgs.length == 6) {
                     PhoneCall call = new PhoneCall(phoneCallArgs[0], phoneCallArgs[1], phoneCallArgs[2], phoneCallArgs[3],
                             phoneCallArgs[4], phoneCallArgs[5]);
                     bill.addPhoneCall(call);
                 } else {
+                    br.close();
+                    reader.close();
                     printErrorMessageAndExit("Text file has malformatted phone call");
                 }
-
+                phoneCallStr = br.readLine();
             }
-            myReader.close();
+            br.close();
+            reader.close();
             return bill;
-        } catch (FileNotFoundException e){
-            System.out.println("FileNotFoundException occurred");
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new ParserException("While parsing text", e);
         }
-
-        return null;
     }
 }

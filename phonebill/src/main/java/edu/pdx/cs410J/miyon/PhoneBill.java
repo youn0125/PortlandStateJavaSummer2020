@@ -48,6 +48,10 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
         return phoneCalls;
     }
 
+    /**
+     * @param customer
+     *          Customer name for <code>PhoneBill</code>
+     */
     public void setCustomer(String customer) {
         this.customer = customer;
     }

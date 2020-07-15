@@ -2,9 +2,12 @@ package edu.pdx.cs410J.miyon;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
 import edu.pdx.cs410J.ParserException;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Vector;
@@ -120,6 +123,20 @@ public class Project2IT extends InvokeMainTestCase {
     }
 
     @Test
+    public void testSevenCommandLineArgumentsWithInvalidOption() {
+        String invalidOption = "-invalid";
+        String customer = "Brian Griffin";
+        String caller = "234-567-8901";
+        String callee = "123-456-7890";
+        String startDate = "01/23/2020";
+        String startTime = "09:12";
+        String endDate = "01/23/2020";
+        String endTime = "10:12";
+        MainMethodResult result = invokeMain(invalidOption, customer, caller, callee, startDate, startTime, endDate, endTime);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Invalid option."));
+    }
+    @Test
     public void testReadmeOption() {
         String readme = "-README";
         MainMethodResult result = invokeMain(readme);
@@ -136,31 +153,35 @@ public class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardOut(), containsString("edu.pdx.cs410J.miyon.Project1"));
     }
 
+    @Ignore
     @Test
     public void testTextFileOption() {
         String textFile = "-textFile";
-        String fileName = "textFile2";
-        MainMethodResult result = invokeMain(textFile, fileName);
-        assertThat(result.getTextWrittenToStandardOut(), containsString("File"));
+        String fileName = "textFile";
+        String customer = "Brian Griffin";
+        String caller = "234-567-8901";
+        String callee = "123-456-7234";
+        String startDate = "01/23/2020";
+        String startTime = "09:12";
+        String endDate = "01/23/2020";
+        String endTime = "10:12";
+        MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime, endDate, endTime);
     }
 
     @Test
-    public void testParseTextFileOption() {
+    public void testTextFileOptionWithBadCustomerName() {
         String textFile = "-textFile";
-        String fileName = "textFile2";
-        MainMethodResult result = invokeMain(textFile, fileName);
-        try {
-            File myFile = new File(fileName);
-            TextParser tp = new TextParser(myFile);
-            PhoneBill bill = tp.parse();
-            Collection<PhoneCall> calls = bill.getPhoneCalls();
-            for ( PhoneCall call : calls) {
-                assertThat (result.getTextWrittenToStandardOut(), containsString(call.toString()));
-            }
-        } catch (ParserException pe) {
-            System.out.println("ParserException");
-        }
-
+        String fileName = "textFile";
+        String customer = "abc";
+        String caller = "234-567-8901";
+        String callee = "123-456-7234";
+        String startDate = "01/23/2020";
+        String startTime = "09:12";
+        String endDate = "01/23/2020";
+        String endTime = "10:12";
+        MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime, endDate, endTime);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("The customer name doesn't match with text file's customer name"));
     }
 
     @Test

@@ -153,7 +153,7 @@ public class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardOut(), containsString("edu.pdx.cs410J.miyon.Project1"));
     }
 
-    @Ignore
+
     @Test
     public void testTextFileOption() {
         String textFile = "-textFile";

@@ -168,6 +168,7 @@ public class Project2IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime, endDate, endTime);
     }
 
+    @Ignore
     @Test
     public void testTextFileOptionWithBadCustomerName() {
         String textFile = "-textFile";

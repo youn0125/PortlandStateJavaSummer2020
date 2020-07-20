@@ -123,10 +123,10 @@ public class Project2 {
         if ( argLength == 7) {
             int pCallstartIdx = argOption.getOptionNum()+1;
 
-            if ( bill.getCustomer().equals(""))
+            if (bill!= null && bill.getCustomer().equals(""))
                 bill.setCustomer(args[pCallstartIdx - 1]);
             //if the customer name doesn't match with text file's customer name
-            if (argOption.getFileOption() && !bill.getCustomer().equals(args[pCallstartIdx - 1]))
+            if (argOption.getFileOption() && bill != null && !bill.getCustomer().equals(args[pCallstartIdx - 1]))
                 printErrorMessageAndExit("The customer name doesn't match with text file's customer name");
 
 
@@ -237,7 +237,7 @@ public class Project2 {
         } catch (ParserException pe) {
             System.out.println("ParserException");
         }
-        return null;
+        return new PhoneBill("");
     }
 
     /**

@@ -9,19 +9,20 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class TextDumperTest {
+public class PrettyPrinterTest {
 
     @Test
-    public void textDumperWritesCustomerName() throws IOException, ParserException {
+    public void prettyPrinterWritesCustomerName() throws IOException {
         StringWriter writer = new StringWriter();
-        TextDumper dumper =  new TextDumper(writer);
+        PrettyPrinter pDumper =  new PrettyPrinter(writer);
 
         String customerName = "Customer";
         PhoneBill bill = new PhoneBill(customerName);
 
-        dumper.dump(bill);
+        pDumper.dump(bill);
 
         String text = writer.toString();
         assertThat(text, containsString(customerName));
+
     }
 }

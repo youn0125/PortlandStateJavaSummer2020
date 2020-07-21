@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 
 import static edu.pdx.cs410J.miyon.Project2.printErrorMessageAndExit;
 
@@ -104,15 +105,6 @@ public class PhoneCall extends AbstractPhoneCall {
 
     return df.format(startDate);
   }
-
-  public String getStartTimeStringFromCommandLine() {
-    return  this.startDate + " " + this.startTime + " " + startTimeAMPM;
-  }
-
-  public String getEndTimeStringFromCommandLine() {
-    return  this.endDate + " " + this.endTime + " " + endTimeAMPM;
-  }
-
   /**
    * @return a <code>String</code> of date and time when the call ended
    */
@@ -127,6 +119,19 @@ public class PhoneCall extends AbstractPhoneCall {
     return df.format(startDate);
   }
 
+  public String getStartTimeStringFromCommandLine() {
+    return  this.startDate + " " + this.startTime + " " + startTimeAMPM;
+  }
+
+  public String getEndTimeStringFromCommandLine() {
+    return  this.endDate + " " + this.endTime + " " + endTimeAMPM;
+  }
+
+  public Long getDurationMinute() {
+    long diffInMillies = Math.abs(this.getEndTime().getTime() - this.getStartTime().getTime());
+    long diff = TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);
+    return diff;
+  }
 
   @Override
   public Date getEndTime() {
@@ -139,6 +144,7 @@ public class PhoneCall extends AbstractPhoneCall {
     Date myDate = parseDate(this.startDate + " " + this.startTime + " " + this.startTimeAMPM);
     return myDate;
   }
+
 
 
   private static Date parseDate(String date){

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -51,7 +52,7 @@ public class PhoneBillTest {
         String customer = "Brian Griffin";
         PhoneBill bill = new PhoneBill(customer);
         PhoneCall call = createPhoneCall();
-        Collection<PhoneCall> calls = new Vector<>();
+        Collection<PhoneCall> calls = new TreeSet<>(new PhoneCallComparator());
         calls.add(call);
         bill.addPhoneCall(call);
         assertThat(bill.getPhoneCalls(), equalTo(calls));

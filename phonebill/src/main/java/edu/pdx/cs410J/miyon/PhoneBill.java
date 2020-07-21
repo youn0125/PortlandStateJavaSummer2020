@@ -3,6 +3,8 @@ package edu.pdx.cs410J.miyon;
 import edu.pdx.cs410J.AbstractPhoneBill;
 
 import java.util.Collection;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Vector;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Vector;
  */
 public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
     private String customer;
-    private Vector<PhoneCall> phoneCalls;
+    private SortedSet<PhoneCall> phoneCalls;
 
     /**
      * Creates a new <code>PhoneBill</code>
@@ -21,7 +23,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
     public PhoneBill(String customer) {
         super();
         this.customer = customer;
-        this.phoneCalls = new Vector<>();
+        this.phoneCalls = new TreeSet<>(new PhoneCallComparator());
     }
 
     /**

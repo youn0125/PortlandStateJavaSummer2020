@@ -182,15 +182,15 @@ public class Project2IT extends InvokeMainTestCase {
         String textFile = "-textFile";
         String fileName = "textFile";
         String customer = "Brian Griffin";
-        String caller = "134-567-8902";
-        String callee = "223-456-7233";
-        String startDate = "01/23/2020";
-        String startTime = "09:12";
+        String caller = "234-567-8902";
+        String callee = "123-456-7233";
+        String startDate = "01/02/2020";
+        String startTime = "11:12";
         String startTimeAMPM = "am";
-        String endDate = "01/23/2020";
-        String endTime = "10:12";
+        String endDate = "01/02/2020";
+        String endTime = "12:12";
         String endTimeAMPM = "am";
-        MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
+        MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
         assertThat (result.getTextWrittenToStandardOut(), containsString("Phone call is added to Phone bill"));
     }
 

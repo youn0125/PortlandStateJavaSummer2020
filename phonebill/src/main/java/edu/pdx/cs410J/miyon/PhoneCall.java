@@ -14,7 +14,7 @@ import static edu.pdx.cs410J.miyon.Project2.printErrorMessageAndExit;
 /**
  * This class is represents a <code>PhoneCall</code>.
  */
-public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall> {
+public class PhoneCall extends AbstractPhoneCall {
   private final String caller;
   private final String callee;
   private final String startDate;
@@ -140,12 +140,6 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
     return myDate;
   }
 
-
-  // Used to sort phone calls by caller
-  public int compareTo(PhoneCall call)
-  {
-    return 0;
-  }
 
   private static Date parseDate(String date){
 

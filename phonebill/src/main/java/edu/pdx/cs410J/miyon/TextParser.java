@@ -39,9 +39,9 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
             String phoneCallStr = br.readLine();
             while (phoneCallStr != null) {
                 String[] phoneCallArgs = phoneCallStr.split(" ");
-                if (phoneCallArgs.length == 6) {
+                if (phoneCallArgs.length == 8) {
                     PhoneCall call = new PhoneCall(phoneCallArgs[0], phoneCallArgs[1], phoneCallArgs[2], phoneCallArgs[3],
-                            phoneCallArgs[4], phoneCallArgs[5]);
+                            phoneCallArgs[4], phoneCallArgs[5], phoneCallArgs[6], phoneCallArgs[7]);
                     bill.addPhoneCall(call);
                 } else {
                     br.close();

@@ -120,7 +120,7 @@ public class Project2 {
 
         //Check arguments from command line
         int argLength = args.length - argOption.getOptionNum();
-        if ( argLength == 7) {
+        if ( argLength == 9) {
             int pCallstartIdx = argOption.getOptionNum()+1;
 
             if (bill!= null && bill.getCustomer().equals(""))
@@ -130,8 +130,9 @@ public class Project2 {
                 printErrorMessageAndExit("The customer name doesn't match with text file's customer name");
 
 
-            PhoneCall call = new PhoneCall(args[pCallstartIdx], args[pCallstartIdx+1],
-                    args[pCallstartIdx+2], args[pCallstartIdx+3], args[pCallstartIdx+4], args[pCallstartIdx+5]);  // Refer to one of Dave's classes so that we can be sure it is on the classpath
+            PhoneCall call = new PhoneCall(args[pCallstartIdx], args[pCallstartIdx+1], args[pCallstartIdx+2],
+                    args[pCallstartIdx+3], args[pCallstartIdx+4], args[pCallstartIdx+5], args[pCallstartIdx+6],
+                    args[pCallstartIdx+7] );  // Refer to one of Dave's classes so that we can be sure it is on the classpath
             bill.addPhoneCall(call);
             Collection<PhoneCall> calls = bill.getPhoneCalls();
             if ( calls != null) {
@@ -161,6 +162,10 @@ public class Project2 {
         }  else if (argLength == 6) {
             printErrorMessageAndExit("Missing end time");
         }  else if (argLength > 7) {
+            printErrorMessageAndExit("There are extraneous arguments");
+        }  else if (argLength > 8) {
+            printErrorMessageAndExit("There are extraneous arguments");
+        }  else if (argLength > 9) {
             printErrorMessageAndExit("There are extraneous arguments");
         }
     }

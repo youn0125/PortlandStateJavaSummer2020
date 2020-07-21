@@ -2,19 +2,26 @@ package edu.pdx.cs410J.miyon;
 
 import edu.pdx.cs410J.AbstractPhoneCall;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.StringTokenizer;
+
 import static edu.pdx.cs410J.miyon.Project2.printErrorMessageAndExit;
 
 /**
  * This class is represents a <code>PhoneCall</code>.
  */
-public class PhoneCall extends AbstractPhoneCall {
+public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall> {
   private final String caller;
   private final String callee;
   private final String startDate;
   private final String startTime;
+  private final String startTimeAMPM;
   private final String endDate;
   private final String endTime;
-
+  private final String endTimeAMPM;
   /**
    * Creates a new <code>PhoneCall</code>
    *
@@ -31,7 +38,8 @@ public class PhoneCall extends AbstractPhoneCall {
    * @param endTime
    *        Time call ended (24-hour time)
    */
-  public PhoneCall(String caller, String callee, String startDate, String startTime, String endDate, String endTime) {
+  public PhoneCall(String caller, String callee, String startDate, String startTime, String startTimeAMPM,
+                   String endDate, String endTime, String endTimeAMPM) {
     super();
     if (!checkPNumberPatten(caller)) {
       printErrorMessageAndExit("Caller number format is not valid");
@@ -60,8 +68,10 @@ public class PhoneCall extends AbstractPhoneCall {
     this.callee = callee;
     this.startDate = startDate;
     this.startTime = startTime;
+    this.startTimeAMPM = startTimeAMPM;
     this.endDate = endDate;
     this.endTime = endTime;
+    this.endTimeAMPM = endTimeAMPM;
   }
 
   /**
@@ -85,7 +95,7 @@ public class PhoneCall extends AbstractPhoneCall {
    */
   @Override
   public String getStartTimeString() {
-    return this.startDate + " " + this.startTime;
+    return this.startDate + " " + this.startTime + " " + this.startTimeAMPM;
   }
 
   /**
@@ -93,8 +103,41 @@ public class PhoneCall extends AbstractPhoneCall {
    */
   @Override
   public String getEndTimeString() {
-    return this.endDate + " " + this.endTime;
+    return this.endDate + " " + this.endTime + " " + this.endTimeAMPM;
   }
+
+
+  @Override
+  public Date getEndTime() {
+    Date myDate = parseDate(this.endDate + " " + this.endTime + " " + this.endTimeAMPM);
+    return myDate;
+  }
+
+  @Override
+  public Date getStartTime() {
+    Date myDate = parseDate(this.startDate + " " + this.startTime + " " + this.startTimeAMPM);
+    return myDate;
+  }
+
+
+  // Used to sort phone calls by caller
+  public int compareTo(PhoneCall call)
+  {
+    return 0;
+  }
+
+  private static Date parseDate(String date){
+
+    try {
+      return new SimpleDateFormat("MM/dd/yyyy h:mm a").parse(date);
+    } catch (ParseException ex) {
+      System.err.println("** Bad date format");
+      System.exit(1);
+      return null;
+    }
+
+  }
+
 
   /**
    * @return a <code>boolean</code> of validity of phone number.

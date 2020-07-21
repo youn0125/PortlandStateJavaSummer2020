@@ -22,9 +22,11 @@ public class PhoneBillTest {
         String callee = "123-456-7890";
         String startDate = "01/23/2020";
         String startTime = "09:12";
+        String startTimeAMPM = "am";
         String endDate = "01/23/2020";
         String endTime = "10:12";
-        return new PhoneCall(caller, callee, startDate, startTime, endDate, endTime);
+        String endTimeAMPM = "am";
+        return new PhoneCall(caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
     }
 
     @Test

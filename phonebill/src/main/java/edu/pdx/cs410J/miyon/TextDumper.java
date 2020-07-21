@@ -30,7 +30,8 @@ public class TextDumper implements PhoneBillDumper<PhoneBill> {
             this.writer.write(bill.getCustomer() +"\n");
             Collection<PhoneCall> calls = bill.getPhoneCalls();
             for ( PhoneCall call : calls) {
-                this.writer.write(call.getCaller() + " " + call.getCallee() + " " + call.getStartTimeString() + " " + call.getEndTimeString() +"\n");
+                this.writer.write(call.getCaller() + " " + call.getCallee() + " " +
+                        call.getStartTimeStringFromCommandLine() + " " + call.getEndTimeStringFromCommandLine() +"\n");
             }
             writer.close();
         } catch (IOException e) {

@@ -123,7 +123,7 @@ public class Project2IT extends InvokeMainTestCase {
         bill.addPhoneCall(call);
         assertThat (result.getTextWrittenToStandardOut(),
                 containsString("Phone call from " + caller + " to " + callee + " from " +
-                        startDate + " " + startTime + " " + startTimeAMPM + " to " + endDate + " " + endTime + " " + endTimeAMPM));
+                        call.getStartTimeString() + " to " + call.getEndTimeString()));
     }
 
     @Test

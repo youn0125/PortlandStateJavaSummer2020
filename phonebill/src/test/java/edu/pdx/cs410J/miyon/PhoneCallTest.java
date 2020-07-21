@@ -43,14 +43,14 @@ public class PhoneCallTest {
   @Test
   public void getStartTimeStringNeedsToBeImplemented() {
     PhoneCall call = createPhoneCall();
-    String start = "01/23/2020 09:12 am";
+    String start = "1/23/20, 9:12 AM";
     assertThat(call.getStartTimeString(), equalTo(start));
   }
 
   @Test
   public void getEndTimeStringNeedsToBeImplemented() {
     PhoneCall call = createPhoneCall();
-    String end = "01/23/2020 10:12 am";
+    String end = "1/23/20, 10:12 AM";
     assertThat(call.getEndTimeString(), equalTo(end));
   }
 

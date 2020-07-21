@@ -3,6 +3,7 @@ package edu.pdx.cs410J.miyon;
 import edu.pdx.cs410J.AbstractPhoneCall;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -95,7 +96,21 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
    */
   @Override
   public String getStartTimeString() {
-    return this.startDate + " " + this.startTime + " " + this.startTimeAMPM;
+    String startTimeDate = this.startDate + " " + this.startTime + " " + startTimeAMPM;
+    Date startDate = parseDate(startTimeDate);
+
+    int f = DateFormat.SHORT;
+    DateFormat df = DateFormat.getDateTimeInstance(f, f);
+
+    return df.format(startDate);
+  }
+
+  public String getStartTimeStringFromCommandLine() {
+    return  this.startDate + " " + this.startTime + " " + startTimeAMPM;
+  }
+
+  public String getEndTimeStringFromCommandLine() {
+    return  this.endDate + " " + this.endTime + " " + endTimeAMPM;
   }
 
   /**
@@ -103,7 +118,13 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
    */
   @Override
   public String getEndTimeString() {
-    return this.endDate + " " + this.endTime + " " + this.endTimeAMPM;
+    String endTimeDate = this.endDate + " " + this.endTime + " " + this.endTimeAMPM;
+    Date startDate = parseDate(endTimeDate);
+
+    int f = DateFormat.SHORT;
+    DateFormat df = DateFormat.getDateTimeInstance(f, f);
+
+    return df.format(startDate);
   }
 
 

@@ -22,6 +22,10 @@ class Option {
     /**
      * Creates a new <code>Option</code>
      *
+     * @param prPrintOption
+     *        pretty print option(T/F)
+     * @param pPrintTo
+     *        pretty print destination
      * @param printOption
      *        print option(T/F)
      * @param fileOption
@@ -340,11 +344,9 @@ public class Project3 {
         System.err.println(message);
         System.exit(1);
     }
-
     /**
      * Prints README for this project and exit the program
      */
-
     private static void printReadmeAndExit() throws IOException {
         InputStream readme = Project3.class.getResourceAsStream("README.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(readme));

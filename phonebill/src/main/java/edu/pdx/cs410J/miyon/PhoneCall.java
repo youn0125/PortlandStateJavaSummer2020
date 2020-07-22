@@ -99,7 +99,7 @@ public class PhoneCall extends AbstractPhoneCall {
     return this.callee;
   }
   /**
-   * @return a <code>String</code> of date and time(12-hour time) with am/pm when the call began
+   * @return a <code>String</code> of MM/dd/yy h:mm a format of date and time when the call began
    */
   @Override
   public String getStartTimeString() {
@@ -112,7 +112,7 @@ public class PhoneCall extends AbstractPhoneCall {
     return df.format(startDate);
   }
   /**
-   * @return a <code>String</code> of date and time when the call ended
+   * @return a <code>String</code> of MM/dd/yy h:mm a format of date and time when the call ended
    */
   @Override
   public String getEndTimeString() {
@@ -124,33 +124,45 @@ public class PhoneCall extends AbstractPhoneCall {
 
     return df.format(endDate);
   }
-
+  /**
+   * @return a <code>String</code> of date and time(12-hour time) with am/pm when the call began
+   */
   public String getStartTimeStringFromCommandLine() {
     return  this.startDate + " " + this.startTime + " " + startTimeAMPM;
   }
-
+  /**
+   * @return a <code>String</code> of date and time(12-hour time) with am/pm when the call ended
+   */
   public String getEndTimeStringFromCommandLine() {
     return  this.endDate + " " + this.endTime + " " + endTimeAMPM;
   }
-
+  /**
+   * @return a <code>Long</code> of duration of each phone call in minutes
+   */
   public Long getDurationMinute() {
     long diffInMillies = Math.abs(this.getEndTime().getTime() - this.getStartTime().getTime());
     long diff = TimeUnit.MINUTES.convert(diffInMillies, TimeUnit.MILLISECONDS);
     return diff;
   }
-
+  /**
+   * @return a <code>Date</code> of date and time when the call ended
+   */
   @Override
   public Date getEndTime() {
     Date myDate = parseDate(this.endDate + " " + this.endTime + " " + this.endTimeAMPM);
     return myDate;
   }
-
+  /**
+   * @return a <code>Date</code> of date and time when the call began
+   */
   @Override
   public Date getStartTime() {
     Date myDate = parseDate(this.startDate + " " + this.startTime + " " + this.startTimeAMPM);
     return myDate;
   }
-
+  /**
+   * @return a <code>Date</code> of MM/dd/yy h:mm a format of date and time
+   */
   private static Date parseDate(String date){
     try {
       return new SimpleDateFormat("MM/dd/yyyy h:mm a").parse(date);
@@ -160,7 +172,6 @@ public class PhoneCall extends AbstractPhoneCall {
       return null;
     }
   }
-
   /**
    * @return a <code>boolean</code> of validity of phone number.
    */
@@ -195,7 +206,9 @@ public class PhoneCall extends AbstractPhoneCall {
       return false;
     }
   }
-
+  /**
+   * @return a <code>boolean</code> of validity of start and end time(endTime-startTime >= 0).
+   */
   private static boolean checkStartEndTime(String sTime, String eTime) {
     Date sDate = parseDate(sTime);
     Date eDate = parseDate(eTime);

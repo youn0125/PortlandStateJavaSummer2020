@@ -10,14 +10,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
+/**
+ * This class represents a <code>PrettyPrinter</code>.
+ */
 public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
     private final Writer writer;
 
     /**
-     * Creates a new <code>TextDumper</code>
+     * Creates a new <code>PrettyPrinter</code>
      *
      * @param writer
-     *        writer for text file
+     *        writer for printTo
      */
     public PrettyPrinter(Writer writer)
     {
@@ -25,7 +28,7 @@ public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
     }
 
     /**
-     * Write <code>PhoneBill</code> to text file
+     * Write <code>PhoneBill</code> pretty to writer
      */
     @Override
     public void dump(PhoneBill bill) throws IOException {

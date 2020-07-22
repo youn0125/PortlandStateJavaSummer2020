@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.Collection;
 
 /**
- * This class is represents a <code>TextDumper</code>.
+ * This class represents a <code>TextDumper</code>.
  */
 public class TextDumper implements PhoneBillDumper<PhoneBill> {
     private final Writer writer;

@@ -32,13 +32,17 @@ public class PhoneCall extends AbstractPhoneCall {
    * @param callee
    *        Phone number of person who was called
    * @param startDate
-   *        Date call began (24-hour time)
+   *        Date call began
    * @param startTime
-   *        Time call began (24-hour time)
+   *        Time call began (12-hour time)
+   * @param startTimeAMPM
+   *        AM/PM call began
    * @param endDate
-   *        Date call ended (24-hour time)
+   *        Date call ended
    * @param endTime
-   *        Time call ended (24-hour time)
+   *        Time call ended (12-hour time)
+   * @param endTimeAMPM
+   *        AM/PM call ended
    */
   public PhoneCall(String caller, String callee, String startDate, String startTime, String startTimeAMPM,
                    String endDate, String endTime, String endTimeAMPM) {
@@ -56,25 +60,18 @@ public class PhoneCall extends AbstractPhoneCall {
       printErrorMessageAndExit("Start date format is not valid");
     }
 
-    if (!checkTimePattern(startTime)) {
+    if (!checkTimePattern(startTime + " " + startTimeAMPM)) {
       printErrorMessageAndExit("Start time format is not valid");
-    }
-
-    if (!checkTimeAMPM(startTimeAMPM)) {
-      printErrorMessageAndExit("Start time am/pm format is not valid");
     }
 
     if (!checkDatePattern(endDate)) {
       printErrorMessageAndExit("End date format is not valid");
     }
 
-    if (!checkTimePattern(endTime)) {
+    if (!checkTimePattern(endTime + " " + endTimeAMPM)) {
       printErrorMessageAndExit("End time format is not valid");
     }
 
-    if (!checkTimeAMPM(startTimeAMPM)) {
-      printErrorMessageAndExit("End time am/pm format is not valid");
-    }
     if (!checkStartEndTime(startDate + " " + startTime + " " +startTimeAMPM, endDate + " " + endTime + " " + endTimeAMPM)) {
       printErrorMessageAndExit("End time is before its starts time");
     }
@@ -87,7 +84,6 @@ public class PhoneCall extends AbstractPhoneCall {
     this.endTime = endTime;
     this.endTimeAMPM = endTimeAMPM;
   }
-
   /**
    * @return a <code>String</code> of caller
    */
@@ -95,7 +91,6 @@ public class PhoneCall extends AbstractPhoneCall {
   public String getCaller() {
     return this.caller;
   }
-
   /**
    * @return a <code>String</code> of callee
    */
@@ -103,9 +98,8 @@ public class PhoneCall extends AbstractPhoneCall {
   public String getCallee() {
     return this.callee;
   }
-
   /**
-   * @return a <code>String</code> of date and time when the call began
+   * @return a <code>String</code> of date and time(12-hour time) with am/pm when the call began
    */
   @Override
   public String getStartTimeString() {
@@ -193,18 +187,9 @@ public class PhoneCall extends AbstractPhoneCall {
    * @return a <code>boolean</code> of validity of time.
    */
   private static boolean checkTimePattern(String date) {
-    String pattern = "^\\d{1,2}:\\d{1,2}";
+
+    String pattern = "(1[012]|0?[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)";
     if (date.matches(pattern)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-  /**
-   * @return a <code>boolean</code> of validity of am/pm.
-   */
-  private static boolean checkTimeAMPM(String date) {
-    if (date.equals("AM") || date.equals("am") || date.equals("pm") || date.equals("PM")){
       return true;
     } else {
       return false;

@@ -169,6 +169,7 @@ public class Project3IT extends InvokeMainTestCase {
                 call.getDurationMinute() + " minutes."));
     }
 
+    @Ignore
     @Test
     public void testNineCommandLineArgumentsWithPrPrintOptionToFile() {
         String pretty = "-pretty";
@@ -236,7 +237,7 @@ public class Project3IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(),
                 containsString("Invalid pretty print option: No printTo and missing arguments"));
     }
-
+    @Ignore
     @Test
     public void testTextFileOptionFileNotExist() {
         String textFile = "-textFile";
@@ -253,7 +254,7 @@ public class Project3IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime,
                 startTimeAMPM, endDate, endTime, endTimeAMPM);
     }
-
+    @Ignore
     @Test
     public void testTextFileOptionFileExist() {
         String textFile = "-textFile";
@@ -262,10 +263,10 @@ public class Project3IT extends InvokeMainTestCase {
         String caller = "234-567-8902";
         String callee = "123-456-7233";
         String startDate = "01/02/2020";
-        String startTime = "11:12";
+        String startTime = "10:12";
         String startTimeAMPM = "am";
         String endDate = "01/02/2020";
-        String endTime = "17:12";
+        String endTime = "25:12";
         String endTimeAMPM = "am";
         MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime,
                 startTimeAMPM, endDate, endTime, endTimeAMPM);
@@ -302,7 +303,7 @@ public class Project3IT extends InvokeMainTestCase {
         String startTime = "09:12";
         String startTimeAMPM = "am";
         String endDate = "01/23/2020";
-        String endTime = "10:12";
+        String endTime = "09:12";
         String endTimeAMPM = "am";
         MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
         assertThat(result.getExitCode(), equalTo(1));
@@ -332,10 +333,10 @@ public class Project3IT extends InvokeMainTestCase {
         String caller = "234-567-8901";
         String callee = "123-456-7890";
         String startDate = "01/23/20";
-        String startTime = "09:12";
+        String startTime = "9:12";
         String startTimeAMPM = "am";
         String endDate = "01/23/2020";
-        String endTime = "10:12";
+        String endTime = "23:12";
         String endTimeAMPM = "am";
         MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
         assertThat(result.getExitCode(), equalTo(1));
@@ -349,9 +350,9 @@ public class Project3IT extends InvokeMainTestCase {
         String callee = "123-456-7890";
         String startDate = "01/23/2020";
         String startTime = "09:12";
-        String startTimeAMPM = "am";
-        String endDate = "01/23/2020";
-        String endTime = "10:";
+        String startTimeAMPM = "AM";
+        String endDate = "1/23/2020";
+        String endTime = "13:22";
         String endTimeAMPM = "am";
         MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
         assertThat(result.getExitCode(), equalTo(1));
@@ -371,7 +372,7 @@ public class Project3IT extends InvokeMainTestCase {
         String endTimeAMPM = "am";
         MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Start time am/pm format is not valid"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Start time format is not valid"));
     }
 
     @Test

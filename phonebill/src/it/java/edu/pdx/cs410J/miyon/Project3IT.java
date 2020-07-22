@@ -266,7 +266,7 @@ public class Project3IT extends InvokeMainTestCase {
         String startTime = "10:12";
         String startTimeAMPM = "am";
         String endDate = "01/02/2020";
-        String endTime = "25:12";
+        String endTime = "11:12";
         String endTimeAMPM = "am";
         MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime,
                 startTimeAMPM, endDate, endTime, endTimeAMPM);
@@ -284,7 +284,7 @@ public class Project3IT extends InvokeMainTestCase {
         String startTime = "11:12";
         String startTimeAMPM = "am";
         String endDate = "01/02/2020";
-        String endTime = "17:12";
+        String endTime = "11:22";
         String endTimeAMPM = "am";
         MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime,
                 startTimeAMPM, endDate, endTime, endTimeAMPM);
@@ -336,7 +336,7 @@ public class Project3IT extends InvokeMainTestCase {
         String startTime = "9:12";
         String startTimeAMPM = "am";
         String endDate = "01/23/2020";
-        String endTime = "23:12";
+        String endTime = "11:12";
         String endTimeAMPM = "am";
         MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
         assertThat(result.getExitCode(), equalTo(1));

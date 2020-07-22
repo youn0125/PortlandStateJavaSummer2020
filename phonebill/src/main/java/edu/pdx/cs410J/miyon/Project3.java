@@ -125,7 +125,7 @@ class Option {
 /**
  * The main class for the CS410J Phone Bill Project
  */
-public class Project2 {
+public class Project3 {
 
     /**
      * Main program parses the command line, creates a
@@ -166,12 +166,7 @@ public class Project2 {
                     args[pCallstartIdx+7] );  // Refer to one of Dave's classes so that we can be sure it is on the classpath
             bill.addPhoneCall(call);
             System.out.println("Phone call is added to Phone bill");
-//            Collection<PhoneCall> calls = bill.getPhoneCalls();
-//            if ( calls != null) {
-//                for ( PhoneCall call2 : calls) {
-//                    System.out.println(call2);
-//                }
-//            }
+
             //-pretty option
             if (argOption.getPrPrintOption()) {
                 dumpBillPretty(bill, argOption.getPPrintTo());
@@ -351,7 +346,7 @@ public class Project2 {
      */
 
     private static void printReadmeAndExit() throws IOException {
-        InputStream readme = Project2.class.getResourceAsStream("README.txt");
+        InputStream readme = Project3.class.getResourceAsStream("README.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
         String AllLine = reader.lines().collect(Collectors.joining(System.lineSeparator()));
 

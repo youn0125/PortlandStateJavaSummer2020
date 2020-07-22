@@ -20,15 +20,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Tests the functionality in the {@link Project2} main class.
+ * Tests the functionality in the {@link Project3} main class.
  */
-public class Project2IT extends InvokeMainTestCase {
+public class Project3IT extends InvokeMainTestCase {
 
     /**
-     * Invokes the main method of {@link Project2} with the given arguments.
+     * Invokes the main method of {@link Project3} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain( Project2.class, args );
+        return invokeMain( Project3.class, args );
     }
 
     /**
@@ -71,18 +71,35 @@ public class Project2IT extends InvokeMainTestCase {
 
     @Test
     public void testFiveCommandLineArguments() {
-        MainMethodResult result = invokeMain("Brian Griffin",  "234-567-8901", "123-456-7890","01/23/2020",
+        MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890","01/23/2020", "09:12");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing start time am/pm"));
+    }
+
+    @Test
+    public void testSixCommandLineArguments() {
+        MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890","01/23/2020",
                 "09:12", "am");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing end date"));
     }
+
     @Test
-    public void testSixCommandLineArguments() {
-        MainMethodResult result = invokeMain("Brian Griffin",  "234-567-8901", "123-456-7890","01/23/2020",
+    public void testSevenCommandLineArguments() {
+        MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890","01/23/2020",
                 "09:12", "am", "01/23/2020");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing end time"));
     }
+
+    @Test
+    public void testEightCommandLineArguments() {
+        MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890","01/23/2020",
+                "09:12", "am", "01/23/2020", "12:12");
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing end time am/pm"));
+    }
+
     @Test
     public void testTenCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin",  "234-567-8901", "123-456-7890","01/23/2020",
@@ -91,7 +108,7 @@ public class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("There are extraneous arguments"));
     }
     @Test
-    public void testNineCommandLineArgumentsWithValidArgsNoOption() {
+    public void testNineCommandLineArgumentsWithNoOption() {
         String customer = "Brian Griffin";
         String caller = "234-567-8901";
         String callee = "123-456-7890";
@@ -109,7 +126,7 @@ public class Project2IT extends InvokeMainTestCase {
     }
 
     @Test
-    public void testNineCommandLineArgumentsWithValidArgsPrintOption() {
+    public void testNineCommandLineArgumentsWithPrintOption() {
         String print = "-print";
         String customer = "Brian Griffin";
         String caller = "234-567-8901";
@@ -128,7 +145,7 @@ public class Project2IT extends InvokeMainTestCase {
                         call.getStartTimeString() + " to " + call.getEndTimeString()));
     }
     @Test
-    public void testNineCommandLineArgumentsWithValidArgsPrPrintOption() {
+    public void testNineCommandLineArgumentsWithPrPrintOptionToSOut() {
         String pretty = "-pretty";
         String printTo = "-";
         String customer = "Brian Griffin";
@@ -148,12 +165,12 @@ public class Project2IT extends InvokeMainTestCase {
         assertThat (result.getTextWrittenToStandardOut(), containsString("Customer name: " + customer));
         assertThat (result.getTextWrittenToStandardOut(), containsString(call.getCaller() + " called to "
                 + call.getCallee() + " at " + df.format(call.getStartTime()) + " and ended at " +
-                df.format(call.getEndTime()) + "." + " The duration of this call is" +
-                call.getDurationMinute()));
+                df.format(call.getEndTime()) + "." + " The duration of this call is " +
+                call.getDurationMinute() + " minutes."));
     }
 
     @Test
-    public void testNineCommandLineArgumentsWithValidArgsPrPrintOptionToFile() {
+    public void testNineCommandLineArgumentsWithPrPrintOptionToFile() {
         String pretty = "-pretty";
         String printTo = "pretty";
         String customer = "Brian Griffin";
@@ -181,7 +198,8 @@ public class Project2IT extends InvokeMainTestCase {
         String endDate = "01/23/2020";
         String endTime = "10:12";
         String endTimeAMPM = "am";
-        MainMethodResult result = invokeMain(invalidOption, customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
+        MainMethodResult result = invokeMain(invalidOption, customer, caller, callee, startDate, startTime,
+                startTimeAMPM, endDate, endTime, endTimeAMPM);
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Invalid option."));
     }
@@ -215,7 +233,8 @@ public class Project2IT extends InvokeMainTestCase {
         String pretty = "-pretty";
         MainMethodResult result = invokeMain(pretty);
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Invalid pretty print option: No printTo and missing arguments"));
+        assertThat(result.getTextWrittenToStandardError(),
+                containsString("Invalid pretty print option: No printTo and missing arguments"));
     }
 
     @Test
@@ -231,8 +250,8 @@ public class Project2IT extends InvokeMainTestCase {
         String endDate = "01/23/2020";
         String endTime = "10:12";
         String endTimeAMPM = "am";
-        MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
-        assertThat (result.getTextWrittenToStandardOut(), containsString("Phone call is added to Phone bill"));
+        MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime,
+                startTimeAMPM, endDate, endTime, endTimeAMPM);
     }
 
     @Test
@@ -246,12 +265,31 @@ public class Project2IT extends InvokeMainTestCase {
         String startTime = "11:12";
         String startTimeAMPM = "am";
         String endDate = "01/02/2020";
-        String endTime = "12:12";
+        String endTime = "17:12";
         String endTimeAMPM = "am";
-        MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
-        assertThat (result.getTextWrittenToStandardOut(), containsString("Phone call is added to Phone bill"));
+        MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime,
+                startTimeAMPM, endDate, endTime, endTimeAMPM);
     }
 
+    @Ignore
+    @Test
+    public void testTextFileOptionWithMalFormatted() {
+        String textFile = "-textFile";
+        String fileName = "textFile";
+        String customer = "Brian Griffin";
+        String caller = "234-567-8902";
+        String callee = "123-456-7233";
+        String startDate = "01/02/2020";
+        String startTime = "11:12";
+        String startTimeAMPM = "am";
+        String endDate = "01/02/2020";
+        String endTime = "17:12";
+        String endTimeAMPM = "am";
+        MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime,
+                startTimeAMPM, endDate, endTime, endTimeAMPM);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Text file has malformatted phone call"));
+    }
 
     @Test
     public void testTextFileOptionWithNotMatchingCustomerName() {
@@ -319,4 +357,37 @@ public class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("End time format is not valid"));
     }
+
+    @Test
+    public void testNineCommandLineArgumentsWithInvalidTimeAMPM() {
+        String customer = "Brian Griffin";
+        String caller = "234-567-8901";
+        String callee = "123-456-7890";
+        String startDate = "01/23/2020";
+        String startTime = "09:12";
+        String startTimeAMPM = "em";
+        String endDate = "01/23/2020";
+        String endTime = "10:12";
+        String endTimeAMPM = "am";
+        MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Start time am/pm format is not valid"));
+    }
+
+    @Test
+    public void testNineCommandLineArgumentsWithInvalidStartEndTime() {
+        String customer = "Brian Griffin";
+        String caller = "234-567-8901";
+        String callee = "123-456-7890";
+        String startDate = "01/26/2020";
+        String startTime = "09:12";
+        String startTimeAMPM = "am";
+        String endDate = "01/23/2020";
+        String endTime = "10:12";
+        String endTimeAMPM = "am";
+        MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("End time is before its starts time"));
+    }
+
 }

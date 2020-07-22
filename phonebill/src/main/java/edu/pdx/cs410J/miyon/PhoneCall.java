@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
-import static edu.pdx.cs410J.miyon.Project2.printErrorMessageAndExit;
+import static edu.pdx.cs410J.miyon.Project3.printErrorMessageAndExit;
 
 /**
  * This class is represents a <code>PhoneCall</code>.
@@ -43,6 +43,7 @@ public class PhoneCall extends AbstractPhoneCall {
   public PhoneCall(String caller, String callee, String startDate, String startTime, String startTimeAMPM,
                    String endDate, String endTime, String endTimeAMPM) {
     super();
+
     if (!checkPNumberPatten(caller)) {
       printErrorMessageAndExit("Caller number format is not valid");
     }
@@ -59,12 +60,23 @@ public class PhoneCall extends AbstractPhoneCall {
       printErrorMessageAndExit("Start time format is not valid");
     }
 
+    if (!checkTimeAMPM(startTimeAMPM)) {
+      printErrorMessageAndExit("Start time am/pm format is not valid");
+    }
+
     if (!checkDatePattern(endDate)) {
       printErrorMessageAndExit("End date format is not valid");
     }
 
     if (!checkTimePattern(endTime)) {
       printErrorMessageAndExit("End time format is not valid");
+    }
+
+    if (!checkTimeAMPM(startTimeAMPM)) {
+      printErrorMessageAndExit("End time am/pm format is not valid");
+    }
+    if (!checkStartEndTime(startDate + " " + startTime + " " +startTimeAMPM, endDate + " " + endTime + " " + endTimeAMPM)) {
+      printErrorMessageAndExit("End time is before its starts time");
     }
     this.caller = caller;
     this.callee = callee;
@@ -111,12 +123,12 @@ public class PhoneCall extends AbstractPhoneCall {
   @Override
   public String getEndTimeString() {
     String endTimeDate = this.endDate + " " + this.endTime + " " + this.endTimeAMPM;
-    Date startDate = parseDate(endTimeDate);
+    Date endDate = parseDate(endTimeDate);
 
     int f = DateFormat.SHORT;
     DateFormat df = DateFormat.getDateTimeInstance(f, f);
 
-    return df.format(startDate);
+    return df.format(endDate);
   }
 
   public String getStartTimeStringFromCommandLine() {
@@ -145,20 +157,15 @@ public class PhoneCall extends AbstractPhoneCall {
     return myDate;
   }
 
-
-
   private static Date parseDate(String date){
-
     try {
       return new SimpleDateFormat("MM/dd/yyyy h:mm a").parse(date);
     } catch (ParseException ex) {
-      System.err.println("** Bad date format");
+      System.err.println("Bad date format");
       System.exit(1);
       return null;
     }
-
   }
-
 
   /**
    * @return a <code>boolean</code> of validity of phone number.
@@ -171,7 +178,6 @@ public class PhoneCall extends AbstractPhoneCall {
       return false;
     }
   }
-
   /**
    * @return a <code>boolean</code> of validity of date.
    */
@@ -183,7 +189,6 @@ public class PhoneCall extends AbstractPhoneCall {
       return false;
     }
   }
-
   /**
    * @return a <code>boolean</code> of validity of time.
    */
@@ -194,5 +199,23 @@ public class PhoneCall extends AbstractPhoneCall {
     } else {
       return false;
     }
+  }
+  /**
+   * @return a <code>boolean</code> of validity of am/pm.
+   */
+  private static boolean checkTimeAMPM(String date) {
+    if (date.equals("AM") || date.equals("am") || date.equals("pm") || date.equals("PM")){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private static boolean checkStartEndTime(String sTime, String eTime) {
+    Date sDate = parseDate(sTime);
+    Date eDate = parseDate(eTime);
+    if (eDate.getTime() - sDate.getTime() < 0)
+      return false;
+    return true;
   }
 }

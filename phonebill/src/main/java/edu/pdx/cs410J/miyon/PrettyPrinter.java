@@ -37,8 +37,8 @@ public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
             for ( PhoneCall call : calls) {
                 this.writer.write(call.getCaller() + " called to " + call.getCallee() + " at " +
                         df.format(call.getStartTime()) + " and ended at " +
-                        df.format(call.getEndTime()) + "." + " The duration of this call is" +
-                        call.getDurationMinute() + ".\n");
+                        df.format(call.getEndTime()) + "." + " The duration of this call is " +
+                        call.getDurationMinute() + " minutes.\n");
             }
             writer.close();
         } catch (IOException e) {

@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import static edu.pdx.cs410J.miyon.Project2.printErrorMessageAndExit;
+import static edu.pdx.cs410J.miyon.Project3.printErrorMessageAndExit;
 
 /**
  * This class is represents a <code>TextParser</code>.

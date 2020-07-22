@@ -11,16 +11,16 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * A unit test for code in the <code>Project2</code> class.  This is different
- * from {@link Project2IT} which is an integration test (and can handle the calls
+ * A unit test for code in the <code>Project3</code> class.  This is different
+ * from {@link Project3IT} which is an integration test (and can handle the calls
  * to {@link System#exit(int)} and the like.
  */
-public class Project2Test {
+public class Project3Test {
 
     @Test
     public void readmeCanBeReadAsResource() throws IOException {
         try (
-                InputStream readme = Project2.class.getResourceAsStream("README.txt");
+                InputStream readme = Project3.class.getResourceAsStream("README.txt");
         ) {
             assertThat(readme, not(nullValue()));
             BufferedReader reader = new BufferedReader(new InputStreamReader(readme));

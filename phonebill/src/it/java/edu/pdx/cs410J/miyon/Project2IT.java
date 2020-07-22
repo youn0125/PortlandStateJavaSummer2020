@@ -9,7 +9,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Vector;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -69,26 +72,26 @@ public class Project2IT extends InvokeMainTestCase {
     @Test
     public void testFiveCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin",  "234-567-8901", "123-456-7890","01/23/2020",
-                "09:12");
+                "09:12", "am");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing end date"));
     }
     @Test
     public void testSixCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin",  "234-567-8901", "123-456-7890","01/23/2020",
-                "09:12", "01/23/2020");
+                "09:12", "am", "01/23/2020");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("Missing end time"));
     }
     @Test
-    public void testEightCommandLineArguments() {
+    public void testTenCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin",  "234-567-8901", "123-456-7890","01/23/2020",
-                "09:12", "01/23/2020", "10:12", "cse");
+                "09:12", "am", "01/23/2020", "10:12", "am", "cse");
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("There are extraneous arguments"));
     }
     @Test
-    public void testSevenCommandLineArgumentsWithValidArgsNoOption() {
+    public void testNineCommandLineArgumentsWithValidArgsNoOption() {
         String customer = "Brian Griffin";
         String caller = "234-567-8901";
         String callee = "123-456-7890";
@@ -106,7 +109,7 @@ public class Project2IT extends InvokeMainTestCase {
     }
 
     @Test
-    public void testSevenCommandLineArgumentsWithValidArgsPrintOption() {
+    public void testNineCommandLineArgumentsWithValidArgsPrintOption() {
         String print = "-print";
         String customer = "Brian Griffin";
         String caller = "234-567-8901";
@@ -117,17 +120,57 @@ public class Project2IT extends InvokeMainTestCase {
         String endDate = "01/23/2020";
         String endTime = "10:12";
         String endTimeAMPM = "am";
-        MainMethodResult result = invokeMain(customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
+        MainMethodResult result = invokeMain(print, customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
         PhoneCall call = new PhoneCall(caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
-        PhoneBill bill = new PhoneBill(customer);
-        bill.addPhoneCall(call);
+
         assertThat (result.getTextWrittenToStandardOut(),
                 containsString("Phone call from " + caller + " to " + callee + " from " +
                         call.getStartTimeString() + " to " + call.getEndTimeString()));
     }
+    @Test
+    public void testNineCommandLineArgumentsWithValidArgsPrPrintOption() {
+        String pretty = "-pretty";
+        String printTo = "-";
+        String customer = "Brian Griffin";
+        String caller = "234-567-8901";
+        String callee = "123-456-7890";
+        String startDate = "01/23/2020";
+        String startTime = "09:12";
+        String startTimeAMPM = "am";
+        String endDate = "01/23/2020";
+        String endTime = "10:12";
+        String endTimeAMPM = "am";
+        MainMethodResult result = invokeMain(pretty, printTo, customer, caller, callee, startDate, startTime,
+                startTimeAMPM, endDate, endTime, endTimeAMPM);
+        PhoneCall call = new PhoneCall(caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
+        DateFormat df = new SimpleDateFormat("E M d, y G h:mm a z");
+
+        assertThat (result.getTextWrittenToStandardOut(), containsString("Customer name: " + customer));
+        assertThat (result.getTextWrittenToStandardOut(), containsString(call.getCaller() + " called to "
+                + call.getCallee() + " at " + df.format(call.getStartTime()) + " and ended at " +
+                df.format(call.getEndTime()) + "." + " The duration of this call is" +
+                call.getDurationMinute()));
+    }
 
     @Test
-    public void testSevenCommandLineArgumentsWithInvalidOption() {
+    public void testNineCommandLineArgumentsWithValidArgsPrPrintOptionToFile() {
+        String pretty = "-pretty";
+        String printTo = "pretty";
+        String customer = "Brian Griffin";
+        String caller = "523-567-8901";
+        String callee = "123-456-7890";
+        String startDate = "01/22/2020";
+        String startTime = "6:12";
+        String startTimeAMPM = "am";
+        String endDate = "01/22/2020";
+        String endTime = "10:12";
+        String endTimeAMPM = "am";
+        MainMethodResult result = invokeMain(pretty, printTo, customer, caller, callee, startDate, startTime,
+                startTimeAMPM, endDate, endTime, endTimeAMPM);
+    }
+
+    @Test
+    public void testNineCommandLineArgumentsWithInvalidOption() {
         String invalidOption = "-invalid";
         String customer = "Brian Griffin";
         String caller = "234-567-8901";
@@ -159,6 +202,21 @@ public class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardOut(), containsString("edu.pdx.cs410J.miyon.Project2"));
     }
 
+    @Test
+    public void testPrintOptionOnly() {
+        String print = "-print";
+        MainMethodResult result = invokeMain(print);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+    }
+
+    @Test
+    public void testPrPrintOptionOnly() {
+        String pretty = "-pretty";
+        MainMethodResult result = invokeMain(pretty);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Invalid pretty print option: No printTo and missing arguments"));
+    }
 
     @Test
     public void testTextFileOptionFileNotExist() {
@@ -214,7 +272,7 @@ public class Project2IT extends InvokeMainTestCase {
     }
 
     @Test
-    public void testSevenCommandLineArgumentsWithInvalidCallerNumber() {
+    public void testNineCommandLineArgumentsWithInvalidCallerNumber() {
         String textFile = "-textFile";
         String fileName = "textFile";
         String customer = "Brian Griffin";
@@ -231,7 +289,7 @@ public class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("Caller number format is not valid"));
     }
     @Test
-    public void testSevenCommandLineArgumentsWithInvalidDate() {
+    public void testNineCommandLineArgumentsWithInvalidDate() {
         String customer = "Brian Griffin";
         String caller = "234-567-8901";
         String callee = "123-456-7890";
@@ -247,7 +305,7 @@ public class Project2IT extends InvokeMainTestCase {
     }
 
     @Test
-    public void testSevenCommandLineArgumentsWithInvalidTime() {
+    public void testNineCommandLineArgumentsWithInvalidTime() {
         String customer = "Brian Griffin";
         String caller = "234-567-8901";
         String callee = "123-456-7890";

@@ -2,7 +2,9 @@ package edu.pdx.cs410J.miyon;
 
 import edu.pdx.cs410J.PhoneBillDumper;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,7 +19,8 @@ public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
      * @param writer
      *        writer for text file
      */
-    public PrettyPrinter(Writer writer) {
+    public PrettyPrinter(Writer writer)
+    {
         this.writer = writer;
     }
 

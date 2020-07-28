@@ -1,17 +1,16 @@
 package edu.pdx.cs410J.miyon;
 
-import edu.pdx.cs410J.web.HttpRequestHelper;
+import edu.pdx.cs410J.ParserException;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.fail;
 
 /**
  * Integration test that tests the REST calls made by {@link PhoneBillRestClient}
@@ -27,35 +26,38 @@ public class PhoneBillRestClientIT {
   }
 
   @Test
-  public void test0RemoveAllDictionaryEntries() throws IOException {
+  public void test0RemoveAllPhoneBills() throws IOException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    client.removeAllDictionaryEntries();
+    client.removeAllPhoneBills();
   }
 
   @Test
-  public void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
+  public void test1NonexistentPhoneBillThrowsException() throws IOException, ParserException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    Map<String, String> dictionary = client.getAllDictionaryEntries();
-    assertThat(dictionary.size(), equalTo(0));
+    try {
+      client.getPhoneBill("Dave");
+      fail("Should have thrown a PhoneBillRestException");
+
+    } catch (PhoneBillRestClient.PhoneBillRestException ex) {
+      assertThat(ex.getHttpStatusCode(), equalTo(HttpURLConnection.HTTP_NOT_FOUND));
+    }
   }
 
   @Test
-  public void test2DefineOneWord() throws IOException {
+  public void test2AddPhoneCall() throws IOException, ParserException {
     PhoneBillRestClient client = newPhoneBillRestClient();
-    String testWord = "TEST WORD";
-    String testDefinition = "TEST DEFINITION";
-    client.addDictionaryEntry(testWord, testDefinition);
+    String customer = "Customer";
+    String caller = "123-456-7890";
+    String callee = "503-453-1890";
+    String start = "03/01/2020 12:00 am";
+    String end = "03/01/2020 1:00 pm";
+    client.addPhoneCall(customer, caller, callee, start, end);
 
-    String definition = client.getDefinition(testWord);
-    assertThat(definition, equalTo(testDefinition));
-  }
+    PhoneBill phoneBill = client.getPhoneBill(customer);
+    assertThat(phoneBill.getCustomer(), equalTo(customer));
 
-  @Test
-  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
-    PhoneBillRestClient client = newPhoneBillRestClient();
-    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
-    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+    PhoneCall phoneCall = phoneBill.getPhoneCalls().iterator().next();
+    assertThat(phoneCall.getCaller(), equalTo(caller));
   }
 
 }

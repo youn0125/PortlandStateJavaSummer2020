@@ -33,6 +33,7 @@ public class TextDumper implements PhoneBillDumper<PhoneBill> {
                 this.writer.write(call.getCaller() + " " + call.getCallee() + " " +
                         call.getStartTimeStringFromCommandLine() + " " + call.getEndTimeStringFromCommandLine() +"\n");
             }
+
             writer.close();
         } catch (IOException e) {
             throw new IOException("While dumping text", e);

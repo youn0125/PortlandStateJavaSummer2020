@@ -1,7 +1,8 @@
 package edu.pdx.cs410J.miyon;
 
+import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,9 +11,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import static edu.pdx.cs410J.miyon.PhoneBillURLParameters.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -22,52 +23,101 @@ import static org.mockito.Mockito.*;
 public class PhoneBillServletTest {
 
   @Test
-  public void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
+  public void requestWithNoCustomerReturnMissingParameter() throws ServletException, IOException {
     PhoneBillServlet servlet = new PhoneBillServlet();
 
     HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+
+    servlet.doGet(request, response);
+
+    verify(response).sendError(HttpServletResponse.SC_PRECONDITION_FAILED, Messages.missingRequiredParameter(CUSTOMER_PARAMETER));
+  }
+
+  @Test
+  public void requestCustomerWithNoPhoneBillReturnsNotFound() throws ServletException, IOException {
+    PhoneBillServlet servlet = new PhoneBillServlet();
+
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    String customerName = "Dave";
+    when(request.getParameter(CUSTOMER_PARAMETER)).thenReturn(customerName);
+
+    HttpServletResponse response = mock(HttpServletResponse.class);
+
+    servlet.doGet(request, response);
+
+    verify(response).sendError(HttpServletResponse.SC_NOT_FOUND, Messages.noPhoneBillForCustomer(customerName));
+
+  }
+
+  @Test
+  public void addPhoneCallToPhoneBill() throws ServletException, IOException {
+    PhoneBillServlet servlet = new PhoneBillServlet();
+
+    String customer = "Brian Knox";
+    String caller = "503-123-4567";
+    String callee = "503-453-1890";
+    String start = "03/01/2020 12:00 am";
+    String end = "03/01/2020 1:00 pm";
+
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    when(request.getParameter(CUSTOMER_PARAMETER)).thenReturn(customer);
+    when(request.getParameter(CALLER_NUMBER_PARAMETER)).thenReturn(caller);
+    when(request.getParameter(CALLEE_NUMBER_PARAMETER)).thenReturn(callee);
+    when(request.getParameter(START_PARAMETER)).thenReturn(start);
+    when(request.getParameter(END_PARAMETER)).thenReturn(end);
+
     HttpServletResponse response = mock(HttpServletResponse.class);
     PrintWriter pw = mock(PrintWriter.class);
 
     when(response.getWriter()).thenReturn(pw);
 
-    servlet.doGet(request, response);
+    servlet.doPost(request, response);
 
-    int expectedWords = 0;
-    verify(pw).println(Messages.formatWordCount(expectedWords));
+    verify(pw, times(0)).println(Mockito.any(String.class));
     verify(response).setStatus(HttpServletResponse.SC_OK);
+
+    PhoneBill phoneBill = servlet.getPhoneBill(customer);
+    assertThat(phoneBill, notNullValue());
+    assertThat(phoneBill.getCustomer(), equalTo(customer));
+
+    PhoneCall phoneCall = phoneBill.getPhoneCalls().iterator().next();
+    assertThat(phoneCall.getCaller(), equalTo(caller));
+    assertThat(phoneCall.getCallee(), equalTo(callee));
+    assertThat(phoneCall.getStartTimeString(), equalTo(start));
+    assertThat(phoneCall.getEndTimeString(), equalTo(end));
   }
 
   @Test
-  public void addOneWordToDictionary() throws ServletException, IOException {
-    PhoneBillServlet servlet = new PhoneBillServlet();
+  public void requestingExistingPhoneBillDumpsItToPrintWriter() throws IOException, ServletException {
+    String customer = "Brian Knox";
+    String caller = "503-123-4567";
+    String callee = "503-634-4213";
+    String start = "04/01/2020 12:00 am";
+    String end = "04/01/2020 1:00 pm";
 
-    String word = "TEST WORD";
-    String definition = "TEST DEFINITION";
+    PhoneBill bill = new PhoneBill(customer);
+    bill.addPhoneCall(new PhoneCall(caller, callee, start, end));
+
+    PhoneBillServlet servlet = new PhoneBillServlet();
+    servlet.addPhoneBill(bill);
 
     HttpServletRequest request = mock(HttpServletRequest.class);
-    when(request.getParameter("word")).thenReturn(word);
-    when(request.getParameter("definition")).thenReturn(definition);
+    when(request.getParameter(CUSTOMER_PARAMETER)).thenReturn(customer);
 
     HttpServletResponse response = mock(HttpServletResponse.class);
-
-    // Use a StringWriter to gather the text from multiple calls to println()
-    StringWriter stringWriter = new StringWriter();
-    PrintWriter pw = new PrintWriter(stringWriter, true);
-
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw, true);
     when(response.getWriter()).thenReturn(pw);
 
-    servlet.doPost(request, response);
+    servlet.doGet(request, response);
 
-    assertThat(stringWriter.toString(), containsString(Messages.definedWordAs(word, definition)));
+    verify(response).setStatus(HttpServletResponse.SC_OK);
 
-    // Use an ArgumentCaptor when you want to make multiple assertions against the value passed to the mock
-    ArgumentCaptor<Integer> statusCode = ArgumentCaptor.forClass(Integer.class);
-    verify(response).setStatus(statusCode.capture());
+    String textPhoneBill = sw.toString();
+    assertThat(textPhoneBill, containsString(customer));
+    assertThat(textPhoneBill, containsString(caller));
 
-    assertThat(statusCode.getValue(), equalTo(HttpServletResponse.SC_OK));
-
-    assertThat(servlet.getDefinition(word), equalTo(definition));
   }
 
 }

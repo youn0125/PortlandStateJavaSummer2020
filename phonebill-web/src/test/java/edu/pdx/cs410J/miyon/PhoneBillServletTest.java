@@ -270,7 +270,7 @@ public class PhoneBillServletTest {
     PhoneBillServlet servlet = new PhoneBillServlet();
 
     String customer = "Brian Knox";
-    String caller = "ABC-123-4567";
+    String caller = "503-123-4567";
     String callee = "ABC-453-1890";
     String start = "03/01/2020 12:00 am";
     String end = "03/01/2020 1:00 pm";

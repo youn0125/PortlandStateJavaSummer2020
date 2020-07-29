@@ -89,6 +89,73 @@ public class PhoneBillServletTest {
   }
 
   @Test
+  public void addPhoneCallToExitingPhoneBill() throws ServletException, IOException {
+    PhoneBillServlet servlet = new PhoneBillServlet();
+
+    String customer = "Brian Knox";
+    String caller = "503-123-4567";
+    String callee = "503-453-1890";
+    String start = "03/01/2020 12:00 am";
+    String end = "03/01/2020 1:00 pm";
+
+    String caller2 = "503-123-4567";
+    String callee2 = "412-523-4213";
+    String start2 = "04/06/2020 12:00 am";
+    String end2 = "04/06/2020 1:00 pm";
+
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    when(request.getParameter(CUSTOMER_PARAMETER)).thenReturn(customer);
+    when(request.getParameter(CALLER_NUMBER_PARAMETER)).thenReturn(caller);
+    when(request.getParameter(CALLEE_NUMBER_PARAMETER)).thenReturn(callee);
+    when(request.getParameter(START_PARAMETER)).thenReturn(start);
+    when(request.getParameter(END_PARAMETER)).thenReturn(end);
+
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    PrintWriter pw = mock(PrintWriter.class);
+
+    when(response.getWriter()).thenReturn(pw);
+
+    servlet.doPost(request, response);
+
+    verify(pw, times(0)).println(Mockito.any(String.class));
+    verify(response).setStatus(HttpServletResponse.SC_OK);
+
+    PhoneBill phoneBill = servlet.getPhoneBill(customer);
+    assertThat(phoneBill, notNullValue());
+    assertThat(phoneBill.getCustomer(), equalTo(customer));
+
+    PhoneCall phoneCall = phoneBill.getPhoneCalls().iterator().next();
+    assertThat(phoneCall.getCaller(), equalTo(caller));
+    assertThat(phoneCall.getCallee(), equalTo(callee));
+    assertThat(phoneCall.getStartTimeString(), equalTo(start));
+    assertThat(phoneCall.getEndTimeString(), equalTo(end));
+
+    request = mock(HttpServletRequest.class);
+    when(request.getParameter(CUSTOMER_PARAMETER)).thenReturn(customer);
+    when(request.getParameter(CALLER_NUMBER_PARAMETER)).thenReturn(caller2);
+    when(request.getParameter(CALLEE_NUMBER_PARAMETER)).thenReturn(callee2);
+    when(request.getParameter(START_PARAMETER)).thenReturn(start2);
+    when(request.getParameter(END_PARAMETER)).thenReturn(end2);
+
+    response = mock(HttpServletResponse.class);
+    pw = mock(PrintWriter.class);
+
+    when(response.getWriter()).thenReturn(pw);
+
+    servlet.doPost(request, response);
+
+    verify(pw, times(0)).println(Mockito.any(String.class));
+    verify(response).setStatus(HttpServletResponse.SC_OK);
+
+    phoneBill = servlet.getPhoneBill(customer);
+    assertThat(phoneBill, notNullValue());
+    assertThat(phoneBill.getCustomer(), equalTo(customer));
+
+    assertThat(phoneBill.getPhoneCalls().size(), equalTo(2));
+
+  }
+
+  @Test
   public void requestingExistingPhoneBillDumpsItToPrintWriter() throws IOException, ServletException {
     String customer = "Brian Knox";
     String caller = "503-123-4567";

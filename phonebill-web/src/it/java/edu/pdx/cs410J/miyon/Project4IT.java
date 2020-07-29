@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.miyon;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import org.hamcrest.CoreMatchers;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -22,6 +23,7 @@ public class Project4IT extends InvokeMainTestCase {
     private static final String PORT = System.getProperty("http.port", "8080");
     private static final String SEARCHOPTION = "-search";
     private static final String PRINTOPTION = "-print";
+    private static final String READMEOPTION = "-README";
     @Test
     public void test0RemoveAllMappings() throws IOException {
         PhoneBillRestClient client = new PhoneBillRestClient(HOSTNAME, Integer.parseInt(PORT));
@@ -264,5 +266,13 @@ public class Project4IT extends InvokeMainTestCase {
                 customer, caller, callee, startDate, startTime, startAMPM, endDate, endTime, endAMPM);
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString( "While contacting server:"));
+    }
+
+    @Test
+    public void test15ReadmeOption() {
+        String readme = "-README";
+        MainMethodResult result = invokeMain(Project4.class, READMEOPTION);
+        assertThat(result.getExitCode(), CoreMatchers.equalTo(0));
+        assertThat(result.getTextWrittenToStandardOut(), CoreMatchers.containsString("edu.pdx.cs410J.miyon.Project4"));
     }
 }

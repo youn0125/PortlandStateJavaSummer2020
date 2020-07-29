@@ -35,7 +35,7 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
                 } else {
                     br.close();
                     reader.close();
-                    System.err.println("Text file has malformatted phone call");
+                    System.err.println("Malformatted phone call");
                     System.exit(1);
                 }
                 phoneCallStr = br.readLine();

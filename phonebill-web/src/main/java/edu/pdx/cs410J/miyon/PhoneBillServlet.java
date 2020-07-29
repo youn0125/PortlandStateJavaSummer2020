@@ -8,12 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static edu.pdx.cs410J.miyon.PhoneBillURLParameters.*;
-
+import static edu.pdx.cs410J.miyon.PhoneCall.parseDate;
 /**
  * This servlet ultimately provides a REST API for working with an
  * <code>PhoneBill</code>.  However, in its current state, it is an example
@@ -37,16 +41,52 @@ public class PhoneBillServlet extends HttpServlet
         response.setContentType( "text/plain" );
 
         String customer = getParameter(CUSTOMER_PARAMETER, request );
+        String start = getParameter(START_PARAMETER, request);
+        String end = getParameter(END_PARAMETER, request);
         if (customer == null) {
             missingRequiredParameter(response, CUSTOMER_PARAMETER);
             return;
+        } else if ( start != null && end == null) {
+            missingRequiredParameter(response, END_PARAMETER);
+            return;
+        } else if ( start == null && end != null) {
+            missingRequiredParameter(response, START_PARAMETER);
+            return;
         }
+
 
         PhoneBill bill = getPhoneBill(customer);
         if (bill == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, Messages.noPhoneBillForCustomer(customer));
-
         } else {
+            if (start != null && end != null) {
+                if (!checkDateTimeParameter(start) ) {
+                    malformatParameter(response, START_PARAMETER);
+                    return;
+                } else if (!checkDateTimeParameter(end) ) {
+                    malformatParameter(response, END_PARAMETER);
+                    return;
+                }
+
+
+                PhoneBill searchedBill = new PhoneBill(customer);
+                Date searchSDate = parseDate(start);
+                Date searchEDate = parseDate(end);
+                Collection<PhoneCall> calls =  bill.getPhoneCalls();
+
+                for (PhoneCall call: calls) {
+                    if ( searchSDate.getTime() < call.getStartTime().getTime() && call.getStartTime().getTime() < searchEDate.getTime()) {
+                        searchedBill.addPhoneCall(call);
+                    }
+                }
+                if(searchedBill.getPhoneCalls().size() == 0){
+                    PrintWriter writer = response.getWriter();
+                    writer.println("There is no phone call between those two times");
+                }
+
+
+                bill = searchedBill;
+            }
             TextDumper dumper = new TextDumper(response.getWriter());
             dumper.dump(bill);
             response.setStatus(HttpServletResponse.SC_OK);
@@ -96,9 +136,37 @@ public class PhoneBillServlet extends HttpServlet
         PhoneBill bill = getPhoneBill(customer);
         if (bill == null) {
             bill = new PhoneBill(customer);
+            if (!Project4.checkPNumberPatten(caller) ) {
+                malformatParameter(response, CALLER_NUMBER_PARAMETER);
+                return;
+            } else if (!Project4.checkPNumberPatten(callee) ) {
+                malformatParameter(response, CALLEE_NUMBER_PARAMETER);
+                return;
+            }
+            if (!checkDateTimeParameter(start) ) {
+                malformatParameter(response, START_PARAMETER);
+                return;
+            } else if (!checkDateTimeParameter(end) ) {
+                malformatParameter(response, END_PARAMETER);
+                return;
+            }
             bill.addPhoneCall(new PhoneCall(caller, callee, start, end));
             this.phoneBills.put(customer, bill);
         } else {
+            if (!Project4.checkPNumberPatten(caller) ) {
+                malformatParameter(response, CALLER_NUMBER_PARAMETER);
+                return;
+            } else if (!Project4.checkPNumberPatten(callee) ) {
+                malformatParameter(response, CALLEE_NUMBER_PARAMETER);
+                return;
+            }
+            if (!checkDateTimeParameter(start) ) {
+                malformatParameter(response, START_PARAMETER);
+                return;
+            } else if (!checkDateTimeParameter(end) ) {
+                malformatParameter(response, END_PARAMETER);
+                return;
+            }
             bill.addPhoneCall(new PhoneCall(caller, callee, start, end));
         }
 
@@ -117,7 +185,7 @@ public class PhoneBillServlet extends HttpServlet
         this.phoneBills.clear();
 
         PrintWriter pw = response.getWriter();
-        pw.println(Messages.allDictionaryEntriesDeleted());
+        pw.println(Messages.allPhoneBillEntriesDeleted());
         pw.flush();
 
         response.setStatus(HttpServletResponse.SC_OK);
@@ -134,6 +202,35 @@ public class PhoneBillServlet extends HttpServlet
     {
         String message = Messages.missingRequiredParameter(parameterName);
         response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
+    }
+
+    /**
+     * Writes an error message about a missing parameter to the HTTP response.
+     *
+     * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
+     */
+    private void malformatParameter( HttpServletResponse response, String parameterName )
+            throws IOException
+    {
+        String message = Messages.malformatParameter(parameterName);
+        response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
+    }
+
+    /**
+     * Writes an error message about a missing parameter to the HTTP response.
+     *
+     * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
+     */
+    private boolean checkDateTimeParameter(String timeParameter) {
+        String[] dateTime = timeParameter.split(" ");
+        if ( dateTime.length != 3) {
+            return false;
+        } else if (!Project4.checkDatePattern(dateTime[0])){
+            return false;
+        } else if (!Project4.checkTimePattern(dateTime[1] + " " + dateTime[2])) {
+            return false;
+        }
+        return true;
     }
 
     /**

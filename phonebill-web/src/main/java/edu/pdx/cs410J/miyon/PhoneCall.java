@@ -92,7 +92,7 @@ public class PhoneCall extends AbstractPhoneCall {
   /**
    * @return a <code>Date</code> of MM/dd/yy h:mm a format of date and time
    */
-  private static Date parseDate(String date){
+  public static Date parseDate(String date){
     try {
       return new SimpleDateFormat("MM/dd/yyyy h:mm a").parse(date);
     } catch (ParseException ex) {

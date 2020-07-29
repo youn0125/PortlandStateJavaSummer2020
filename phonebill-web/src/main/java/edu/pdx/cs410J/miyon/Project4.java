@@ -3,12 +3,16 @@ package edu.pdx.cs410J.miyon;
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+
+import static edu.pdx.cs410J.miyon.PhoneCall.parseDate;
 
 
 /**
@@ -142,7 +146,6 @@ public class Project4 {
 
         if (hostName == null) {
             usage( MISSING_ARGS);
-
         } else if ( portString == null) {
             usage( "Missing port" );
         }
@@ -150,7 +153,6 @@ public class Project4 {
         int port;
         try {
             port = Integer.parseInt( portString );
-
         } catch (NumberFormatException ex) {
             usage("Port \"" + portString + "\" must be an integer");
             return;
@@ -171,7 +173,71 @@ public class Project4 {
         //search option
         if (argOption.getSearchOption()) {
             if (argLength == 7) {
-                //do searching
+                //phone call start index
+                int pCallstartIdx = argOption.getOptionNum()+1;
+
+                customer = args[pCallstartIdx - 1];
+                startDate = args[pCallstartIdx];
+                if ( !checkDatePattern(startDate))
+                    usage("Start date format is not valid");
+                startTime = args[pCallstartIdx + 1];
+                startAMPM = args[pCallstartIdx + 2];
+                if (!checkTimePattern(startTime + " " + startAMPM)) {
+                    usage("Start time format is not valid");
+                }
+                endDate = args[pCallstartIdx + 3];
+                if (!checkDatePattern(endDate)) {
+                    usage("End date format is not valid");
+                }
+                endTime = args[pCallstartIdx + 4];
+                endAMPM = args[pCallstartIdx + 5];
+                if (!checkTimePattern(endTime + " " + endAMPM)) {
+                    usage("End time format is not valid");
+                }
+
+                if (!checkStartEndTime(startDate + " " + startTime + " " +startAMPM, endDate + " " + endTime + " " + endAMPM)) {
+                    usage("End time is before its starts time");
+                }
+
+                String sDate = startDate + " " + startTime + " " +startAMPM;
+                String eDate = endDate + " " + endTime + " " + endAMPM;
+                PhoneBillRestClient client = new PhoneBillRestClient(hostName, port);
+                try {
+                    PhoneBill bill = client.getPhoneBill(customer);
+
+                    PhoneBill searchedBill = new PhoneBill(customer);
+                    Date searchSDate = parseDate(sDate);
+                    Date searchEDate = parseDate(eDate);
+                    Collection<PhoneCall> calls =  bill.getPhoneCalls();
+
+                    for (PhoneCall call: calls) {
+                        if ( searchSDate.getTime() < call.getStartTime().getTime() && call.getStartTime().getTime() < searchEDate.getTime()) {
+                            searchedBill.addPhoneCall(call);
+                        }
+                    }
+
+                    if(searchedBill.getPhoneCalls().size() == 0)
+                        System.out.println("There is no phone call between those two times");
+                    bill = searchedBill;
+
+                    PrintWriter pw = new PrintWriter(System.out, true);
+                    PrettyPrinter pretty = new PrettyPrinter(pw);
+                    pretty.dump(bill);
+                } catch (ParserException pe) {
+                    error("While parsing phone bill: " + pe);
+                    return;
+                } catch (IOException ioe) {
+                    error("While contacting server: " + ioe);
+                    return;
+                } catch (PhoneBillRestClient.PhoneBillRestException ex) {
+                    switch (ex.getHttpStatusCode()) {
+                        case HttpURLConnection.HTTP_NOT_FOUND:
+                            error("No phone bill for customer " + customer);
+                            return;
+                        default:
+                    }
+                }
+
             } else {
                 usage("Missing searching arguments");
             }
@@ -219,7 +285,7 @@ public class Project4 {
                     client.addPhoneCall(customer, caller, callee, sDate, eDate);
                     //-print option
                     if (argOption.getPrintOption()) {
-                        System.out.println("print call");
+                        System.out.println(new PhoneCall(caller, callee, sDate, eDate));
                     }
                 } catch ( IOException ex ) {
                     error("While contacting server: " + ex);
@@ -246,8 +312,7 @@ public class Project4 {
                 } catch (PhoneBillRestClient.PhoneBillRestException ex) {
                     switch (ex.getHttpStatusCode()) {
                         case HttpURLConnection.HTTP_NOT_FOUND:
-                            System.err.println("No phone bill for customer " + customer);
-                            System.exit(1);
+                            error("No phone bill for customer " + customer);
                             return;
                         default:
 
@@ -258,15 +323,15 @@ public class Project4 {
                 usage("Missing callee");
             } else if (argLength == 3) {
                 usage("Missing start date");
-            }  else if (argLength == 4) {
+            } else if (argLength == 4) {
                 usage("Missing start time");
-            }  else if (argLength == 5) {
+            } else if (argLength == 5) {
                 usage("Missing start time am/pm");
-            }  else if (argLength == 6) {
+            } else if (argLength == 6) {
                 usage("Missing end date");
             }  else if (argLength == 7) {
                 usage("Missing end time");
-            }  else if (argLength == 8) {
+            } else if (argLength == 8) {
                 usage("Missing end time am/pm");
             }  else if (argLength > 9) {
                 usage("There are extraneous arguments");
@@ -402,7 +467,7 @@ public class Project4 {
     /**
      * @return a <code>boolean</code> of validity of phone number.
      */
-    private static boolean checkPNumberPatten(String pNumber) {
+    public static boolean checkPNumberPatten(String pNumber) {
         String pattern = "(?:\\d{3}-){2}\\d{4}";
         if (pNumber.matches(pattern)) {
             return true;
@@ -413,7 +478,7 @@ public class Project4 {
     /**
      * @return a <code>boolean</code> of validity of date.
      */
-    private static boolean checkDatePattern(String date) {
+    public static boolean checkDatePattern(String date) {
         String pattern = "^\\d{1,2}\\/\\d{1,2}\\/\\d{4}";
         if (date.matches(pattern)) {
             return true;
@@ -424,7 +489,7 @@ public class Project4 {
     /**
      * @return a <code>boolean</code> of validity of time.
      */
-    private static boolean checkTimePattern(String date) {
+    public static boolean checkTimePattern(String date) {
 
         String pattern = "(1[012]|0?[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)";
         if (date.matches(pattern)) {
@@ -436,7 +501,7 @@ public class Project4 {
     /**
      * @return a <code>boolean</code> of validity of start and end time(endTime-startTime >= 0).
      */
-    private static boolean checkStartEndTime(String sTime, String eTime) {
+    public static boolean checkStartEndTime(String sTime, String eTime) {
         Date sDate = parseDate(sTime);
         Date eDate = parseDate(eTime);
         if (eDate.getTime() - sDate.getTime() < 0)

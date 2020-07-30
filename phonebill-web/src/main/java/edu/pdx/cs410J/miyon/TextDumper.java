@@ -4,7 +4,9 @@ import edu.pdx.cs410J.PhoneBillDumper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
+/**
+ * This class is represents a <code>TextDumper</code>.
+ */
 public class TextDumper implements PhoneBillDumper<PhoneBill> {
     private final PrintWriter  writer;
 

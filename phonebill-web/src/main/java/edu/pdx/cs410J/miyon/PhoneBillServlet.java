@@ -8,21 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static edu.pdx.cs410J.miyon.PhoneBillURLParameters.*;
 import static edu.pdx.cs410J.miyon.PhoneCall.parseDate;
 /**
- * This servlet ultimately provides a REST API for working with an
- * <code>PhoneBill</code>.  However, in its current state, it is an example
- * of how to use HTTP and Java servlets to store simple dictionary of words
- * and their definitions.
+ * This servlet provides a REST API for working with an
+ * <code>PhoneBill</code>.
  */
 public class PhoneBillServlet extends HttpServlet
 {
@@ -30,10 +25,10 @@ public class PhoneBillServlet extends HttpServlet
     private final Map<String, PhoneBill> phoneBills = new HashMap<>();
 
     /**
-     * Handles an HTTP GET request from a client by writing the definition of the
-     * word specified in the "word" HTTP parameter to the HTTP response.  If the
-     * "word" parameter is not specified, all of the entries in the dictionary
-     * are written to the HTTP response.
+     * Handles an HTTP GET request from a client by writing the <code>PhoneBill</code> of the
+     * customer specified in the "customer" HTTP parameter to the HTTP response. If there are
+     * "start" and "end" HTTP parameter, it writes the <code>PhoneBill</code> with <code>PhoneCall</code>
+     * which begins within "start" and "end".
      */
     @Override
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
@@ -94,8 +89,8 @@ public class PhoneBillServlet extends HttpServlet
     }
 
     /**
-     * Handles an HTTP POST request by storing the dictionary entry for the
-     * "word" and "definition" request parameters.  It writes the dictionary
+     * Handles an HTTP POST request by storing the <code>PhoneBill</code> and <code>PhoneCall</code> entry for the
+     * "customer", "callerNumber", "calleeNumber", "start", and "end" request parameters. It writes the phone bill
      * entry to the HTTP response.
      */
     @Override
@@ -174,7 +169,7 @@ public class PhoneBillServlet extends HttpServlet
     }
 
     /**
-     * Handles an HTTP DELETE request by removing all dictionary entries.  This
+     * Handles an HTTP DELETE request by removing all phone bill entries.  This
      * behavior is exposed for testing purposes only.  It's probably not
      * something that you'd want a real application to expose.
      */
@@ -205,9 +200,8 @@ public class PhoneBillServlet extends HttpServlet
     }
 
     /**
-     * Writes an error message about a missing parameter to the HTTP response.
-     *
-     * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
+     * Writes an error message about a malformatted parameter to the HTTP response.
+     * The text of the error message is created by {@link Messages#malformatParameter(String)}
      */
     private void malformatParameter( HttpServletResponse response, String parameterName )
             throws IOException
@@ -217,9 +211,7 @@ public class PhoneBillServlet extends HttpServlet
     }
 
     /**
-     * Writes an error message about a missing parameter to the HTTP response.
-     *
-     * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
+     * @return a <code>boolean</code> of validity of date and time.
      */
     private boolean checkDateTimeParameter(String timeParameter) {
         String[] dateTime = timeParameter.split(" ");
@@ -248,12 +240,16 @@ public class PhoneBillServlet extends HttpServlet
             return value;
         }
     }
-
+    /**
+     * @return a <code>PhoneBill</code>
+     */
     @VisibleForTesting
     PhoneBill getPhoneBill(String customer) {
         return this.phoneBills.get(customer);
     }
-
+    /**
+     * Adds a <code>PhoneBill</code>
+     */
     @VisibleForTesting
     void addPhoneBill(PhoneBill bill) {
         this.phoneBills.put(bill.getCustomer(), bill);

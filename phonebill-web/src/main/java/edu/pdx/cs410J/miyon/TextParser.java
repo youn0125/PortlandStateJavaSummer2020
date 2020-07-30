@@ -1,20 +1,28 @@
 package edu.pdx.cs410J.miyon;
 
-
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.PhoneBillParser;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
+/**
+ * This class is represents a <code>TextParser</code>.
+ */
 public class TextParser implements PhoneBillParser<PhoneBill> {
     private final Reader reader;
-
+    /**
+     * Creates a new <code>TextParser</code>
+     *
+     * @param reader
+     *        reader
+     */
     public TextParser(Reader reader) {
         this.reader = reader;
     }
-
+    /**
+     * @return a <code>PhoneBill</code> with <code>PhoneCall</code> after reading
+     */
     @Override
     public PhoneBill parse() throws ParserException {
         BufferedReader br = new BufferedReader(this.reader);

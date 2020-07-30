@@ -13,19 +13,17 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
  * A helper class for accessing the rest client.  Note that this class provides
- * an example of how to make gets and posts to a URL.  You'll need to change it
- * to do something other than just send dictionary entries.
+ * an example of how to make gets and posts to a URL.
  */
 public class PhoneBillRestClient extends HttpRequestHelper
 {
     private static final String WEB_APP = "phonebill";
     private static final String SERVLET = "calls";
-
     private final String url;
 
 
     /**
-     * Creates a client to the Phone Bil REST service running on the given host and port
+     * Creates a client to the Phone Bill REST service running on the given host and port
      * @param hostName The name of the host
      * @param port The port
      */
@@ -44,23 +42,31 @@ public class PhoneBillRestClient extends HttpRequestHelper
         TextParser parser = new TextParser(new StringReader(content));
         return parser.parse();
     }
-
+    /**
+     * Request Post to server to add a <code>PhoneCall</code>
+     */
     public void addPhoneCall(String customer, String caller, String callee, String start, String end ) throws IOException {
         Response response = postToMyURL(Map.of(CUSTOMER_PARAMETER, customer, CALLER_NUMBER_PARAMETER, caller,
                 CALLEE_NUMBER_PARAMETER, callee, START_PARAMETER, start, END_PARAMETER, end));
         throwExceptionIfNotOkayHttpStatus(response);
     }
-
+    /**
+     * Request Post to server
+     */
     @VisibleForTesting
     Response postToMyURL(Map<String, String> phoneBillEntries) throws IOException {
         return post(this.url, phoneBillEntries);
     }
-
+    /**
+     * Request Delete Phone bills to server
+     */
     public void removeAllPhoneBills() throws IOException {
         Response response = delete(this.url, Map.of());
         throwExceptionIfNotOkayHttpStatus(response);
     }
-
+    /**
+     * Throw exception if the response didn't get 200(HTTP_OK) code
+     */
     private Response throwExceptionIfNotOkayHttpStatus(Response response) {
         int code = response.getCode();
         if (code != HTTP_OK) {
@@ -69,15 +75,24 @@ public class PhoneBillRestClient extends HttpRequestHelper
         return response;
     }
 
+    /**
+     * A helper class for throwing exception
+     */
     @VisibleForTesting
     class PhoneBillRestException extends RuntimeException {
         private final int httpStatusCode;
-
+        /**
+         * Creates a new <code>PhoneBillRestException</code>
+         * @param httpStatusCode
+         *        a HTTP Status Code
+         */
         PhoneBillRestException(int httpStatusCode) {
             super("Got an HTTP Status Code of " + httpStatusCode);
             this.httpStatusCode = httpStatusCode;
         }
-
+        /**
+         * Return a HTTP Status Code
+         */
         public int getHttpStatusCode() {
             return this.httpStatusCode;
         }

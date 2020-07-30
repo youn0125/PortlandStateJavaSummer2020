@@ -1,9 +1,7 @@
 package edu.pdx.cs410J.miyon;
 
 import edu.pdx.cs410J.ParserException;
-import edu.pdx.cs410J.web.HttpRequestHelper;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.text.ParseException;
@@ -12,13 +10,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-import static edu.pdx.cs410J.miyon.PhoneCall.parseDate;
-
-
 /**
  * The option class for the CS410J Phone Bill-web Project
  */
-
 class Option {
     private String hostName;
     private String port;
@@ -38,7 +32,6 @@ class Option {
      *        print option(T/F)
      * @param optionNum
      *        number of option
-
      */
     Option (String hostName, String port, boolean searchOption, boolean printOption, int optionNum) {
         this.hostName = hostName;
@@ -46,7 +39,6 @@ class Option {
         this.searchOption = searchOption;
         this.printOption = printOption;
         this.optionNum = optionNum;
-
     }
 
     /**
@@ -74,14 +66,12 @@ class Option {
     boolean getPrintOption() {
         return this.printOption;
     }
-
     /**
      * @return a <code>int</code> of number of options
      */
     int getOptionNum() {
         return this.optionNum;
     }
-
     /**
      * @param s
      *       String value of host name
@@ -98,7 +88,7 @@ class Option {
     }
     /**
      * @param b
-     *       T/F value of print option
+     *       T/F value of search option
      */
     void setSearchOption(boolean b) {
         this.searchOption = b;
@@ -121,7 +111,6 @@ class Option {
 
 }
 
-
 /**
  * The main class that parses the command line and communicates with the
  * Phone Bill server using REST.
@@ -129,7 +118,12 @@ class Option {
 public class Project4 {
 
     public static final String MISSING_ARGS = "Missing command line arguments";
-
+    /**
+     * Main program parses the command line, make a request to create or get a
+     * <code>PhoneBill</code> and <code>PhoneCall</code> by REST API.
+     * There is a search option to make a request to get <code>PhoneCall</code> within the condition.
+     * In addition there are a print and a readme option.
+     */
     public static void main(String... args) {
 
         // Check options from command line
@@ -340,20 +334,10 @@ public class Project4 {
 
         System.exit(0);
     }
-
     /**
-     * Makes sure that the give response has the expected HTTP status code
-     * @param code The expected status code
-     * @param response The response from the server
+     * Prints error message and exits
+     * @param message An error message to print
      */
-    private static void checkResponseCode( int code, HttpRequestHelper.Response response )
-    {
-        if (response.getCode() != code) {
-            error(String.format("Expected HTTP code %d, got code %d.\n\n%s", code,
-                    response.getCode(), response.getContent()));
-        }
-    }
-
     private static void error( String message )
     {
         PrintStream err = System.err;
@@ -396,10 +380,8 @@ public class Project4 {
         System.exit(1);
     }
 
-
     /**
      * Process option from the command line
-     *
      * @param op
      *        option object
      * @param args

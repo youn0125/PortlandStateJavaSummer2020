@@ -1,5 +1,7 @@
 package edu.pdx.cs410J.miyon;
-
+/**
+ * Interface for Constant variable for <code>PhoneBill</code> and <code>PhoneCall</code> parameters
+ */
 public interface PhoneBillURLParameters {
     static final String CUSTOMER_PARAMETER = "customer";
     static final String CALLER_NUMBER_PARAMETER = "callerNumber";

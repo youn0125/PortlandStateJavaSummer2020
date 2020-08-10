@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreatePhoneBillActivity">
+
+
+    <EditText
+        android:id="@+id/cNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/customer_name"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/callerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/caller"
+        android:inputType="phone"
+        app:layout_constraintStart_toStartOf="@+id/cNameText"
+        app:layout_constraintTop_toBottomOf="@+id/cNameText" />
+
+    <EditText
+        android:id="@+id/calleeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/callee"
+        android:inputType="phone"
+        app:layout_constraintStart_toStartOf="@+id/callerText"
+        app:layout_constraintTop_toBottomOf="@+id/callerText" />
+
+    <EditText
+        android:id="@+id/startText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:ems="10"
+        android:hint="@string/start_date"
+        android:inputType="date"
+        app:layout_constraintBaseline_toBaselineOf="@+id/startTimeText"
+        app:layout_constraintEnd_toStartOf="@+id/startTimeText"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/startTimeText"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginBottom="45dp"
+        android:ems="10"
+        android:hint="@string/time"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/endText"
+        app:layout_constraintEnd_toStartOf="@+id/startAMPMText"
+        app:layout_constraintStart_toEndOf="@+id/startText"
+        app:layout_constraintTop_toTopOf="@+id/calleeText" />
+
+    <EditText
+        android:id="@+id/startAMPMText"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:hint="@string/am_pm"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/startTimeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/startTimeText" />
+
+    <EditText
+        android:id="@+id/endText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:ems="10"
+        android:hint="@string/end_date"
+        android:inputType="date"
+        app:layout_constraintBaseline_toBaselineOf="@+id/endTimeText"
+        app:layout_constraintEnd_toStartOf="@+id/endTimeText"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/endTimeText"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="45dp"
+        android:ems="10"
+        android:hint="@string/time"
+        android:inputType="time"
+        app:layout_constraintEnd_toStartOf="@+id/endAMPMText"
+        app:layout_constraintStart_toEndOf="@+id/endText"
+        app:layout_constraintTop_toBottomOf="@+id/calleeText" />
+
+    <EditText
+        android:id="@+id/endAMPMText"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:hint="@string/am_pm"
+        android:inputType="textPersonName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/endTimeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/endTimeText" />
+
+    <Button
+        android:id="@+id/createButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="25dp"
+        android:text="@string/create"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

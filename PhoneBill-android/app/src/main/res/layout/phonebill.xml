@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:background="#ffffff">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchCNameText"
+        android:text="Customer Name"
+        android:textSize="20sp"
+        android:textColor="#00a7f5"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/callerText"
+        android:text="Caller"
+        android:textSize="20sp"
+        android:textColor="#00a7f5"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/calleeText"
+        android:text="Callee"
+        android:textSize="20sp"
+        android:textColor="#00a7f5"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchStartText"
+        android:text="start"
+        android:textSize="20sp"
+        android:textColor="#00a7f5"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchEndText"
+        android:text="end"
+        android:textSize="20sp"
+        android:textColor="#00a7f5"/>
+
+
+</LinearLayout>

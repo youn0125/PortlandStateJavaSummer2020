@@ -92,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
                             searchIntent.putExtra("bills", bills);
                             startActivity(searchIntent);
                             break;
+                        case 3:
+                            Intent readmeIntent = new Intent(getApplicationContext(), ReadmeActivity.class);
+                            readmeIntent.putExtra("bills", bills);
+                            startActivity(readmeIntent);
+                            break;
                         default:
                             break;
                     }

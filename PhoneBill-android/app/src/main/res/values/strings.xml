@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Phone Bill</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="caller">Caller</string>
+    <string name="callee">Callee</string>
+    <string name="start_date">Start Date</string>
+    <string name="time">Time</string>
+    <string name="am_pm">AM/PM</string>
+    <string name="end_date">End Date</string>
+    <string name="create">Create</string>
+    <string name="pretty_prints_phone_bill">Pretty Prints Phone Bill</string>
+    <string name="search">Search</string>
+    <string name="menu">Menu</string>
+    <string name="phone_calls">Phone Calls</string>
+    <string name="readme"> This README is written by Mi Yon Kim.\n\n
+     Create Phone Bill: Create Phone Bill with Phone Call\n
+        \t\tCustomer Name: Person whose phone bill we’re modeling\n
+        \t\tCaller: Phone number of caller\n
+        \t\tCallee: Phone number of callee\n
+        \t\tStart: Date and time call began (12-hour time)\n
+        \t\tEnd: Date and time call ended (12-hour time)\n\n
+     Pretty Print: Pretty Printer for Phone Bill\n
+        \t\tCustomer Name: Person whose phone bill we’re modeling\n\n
+     Search: Search for Phone Call\n
+        \t\tCustomer Name: Person whose phone bill we’re modeling\n
+        \t\tStart: Date and time call began (12-hour time)\n
+        \t\tEnd: Date and time call ended (12-hour time)\n\n
+        Date and time should be in the format: mm/dd/yyyy hh:mm</string>
+</resources>

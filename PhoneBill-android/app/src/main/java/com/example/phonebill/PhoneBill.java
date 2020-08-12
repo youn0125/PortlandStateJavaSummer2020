@@ -87,7 +87,7 @@ public class PhoneBill implements Parcelable {
 
     public String prettyPrinter() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Customer name: " + this.customer +"\n");
+        sb.append("Customer name: " + this.customer +"\n\n");
         Collection<PhoneCall> calls = this.phoneCalls;
         long duration = 0;
         DateFormat df = new SimpleDateFormat("E M d, y G h:mm a z");
@@ -95,7 +95,7 @@ public class PhoneBill implements Parcelable {
             sb.append(call.getCaller() + " called to " + call.getCallee() + " at " +
                     df.format(call.getStartTime()) + " and ended at " +
                     df.format(call.getEndTime()) + "." + " The duration of this call is " +
-                    call.getDurationMinute() + " minutes.\n");
+                    call.getDurationMinute() + " minutes.\n\n");
         }
         return sb.toString().trim();
     }

@@ -10,102 +10,110 @@
         android:id="@+id/searchCNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
         android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="@string/customer_name"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/searchStartText"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/searchStartText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginEnd="6dp"
         android:ems="10"
         android:hint="@string/start_date"
         android:inputType="date"
-        app:layout_constraintBaseline_toBaselineOf="@+id/searchStartTimeText"
         app:layout_constraintEnd_toStartOf="@+id/searchStartTimeText"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchCNameText" />
 
     <EditText
         android:id="@+id/searchStartTimeText"
-        android:layout_width="76dp"
+        android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginTop="45dp"
+        android:layout_marginEnd="7dp"
         android:layout_marginBottom="45dp"
         android:ems="10"
         android:hint="@string/time"
         android:inputType="time"
-        app:layout_constraintBottom_toBottomOf="@+id/searchEndText"
+        app:layout_constraintBottom_toBottomOf="@+id/searchEndTimeText"
         app:layout_constraintEnd_toStartOf="@+id/searchStartAMPMText"
         app:layout_constraintStart_toEndOf="@+id/searchStartText"
         app:layout_constraintTop_toTopOf="@+id/searchCNameText" />
 
     <EditText
         android:id="@+id/searchStartAMPMText"
-        android:layout_width="76dp"
-        android:layout_height="45dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="7dp"
         android:ems="10"
         android:hint="@string/am_pm"
-        app:layout_constraintBaseline_toBaselineOf="@+id/searchStartTimeText"
+        app:layout_constraintBottom_toTopOf="@+id/searchEndAMPMText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/searchStartTimeText" />
+        app:layout_constraintStart_toEndOf="@+id/searchStartTimeText"
+        app:layout_constraintTop_toTopOf="@+id/searchStartTimeText" />
 
     <EditText
         android:id="@+id/searchEndText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginEnd="6dp"
         android:ems="10"
         android:hint="@string/end_date"
         android:inputType="date"
-        app:layout_constraintBaseline_toBaselineOf="@+id/searchEndTimeText"
         app:layout_constraintEnd_toStartOf="@+id/searchEndTimeText"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchStartText" />
 
     <EditText
         android:id="@+id/searchEndTimeText"
-        android:layout_width="76dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="45dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="7dp"
         android:ems="10"
         android:hint="@string/time"
         android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/searchEndText"
         app:layout_constraintEnd_toStartOf="@+id/searchEndAMPMText"
         app:layout_constraintStart_toEndOf="@+id/searchEndText"
-        app:layout_constraintTop_toBottomOf="@+id/searchCNameText" />
+        app:layout_constraintTop_toBottomOf="@+id/searchStartText" />
 
     <EditText
         android:id="@+id/searchEndAMPMText"
-        android:layout_width="76dp"
-        android:layout_height="45dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="7dp"
         android:ems="10"
         android:hint="@string/am_pm"
         android:inputType="textPersonName"
-        app:layout_constraintBaseline_toBaselineOf="@+id/searchEndTimeText"
+        app:layout_constraintBottom_toBottomOf="@+id/searchEndTimeText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/searchEndTimeText" />
+        app:layout_constraintStart_toEndOf="@+id/searchEndTimeText"
+        app:layout_constraintTop_toBottomOf="@+id/searchStartTimeText" />
 
     <Button
         android:id="@+id/searchSearchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
-        android:layout_marginTop="25dp"
         android:text="@string/search"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchEndText" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/searchGoToMainButton"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/phoneCallsTextView"
-        android:layout_width="362dp"
+        android:layout_width="0dp"
         android:layout_height="316dp"
         android:layout_marginStart="22dp"
         android:layout_marginTop="25dp"
+        android:layout_marginEnd="22dp"
         android:text="@string/phone_calls"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchSearchButton" />
 
@@ -113,10 +121,10 @@
         android:id="@+id/searchGoToMainButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginBottom="107dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="25dp"
         android:text="@string/menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/searchSearchButton"
+        app:layout_constraintTop_toBottomOf="@+id/searchEndText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

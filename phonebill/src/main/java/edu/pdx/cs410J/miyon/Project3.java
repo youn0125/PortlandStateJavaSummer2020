@@ -25,17 +25,17 @@ public class Project3 {
         PhoneBill bill = new PhoneBill("");
 
         for ( int i = 0; i < 4; i++) {
-            if ( args.length > argOption.getOptionNum() && args[argOption.getOptionNum()].startsWith("-") ) {
+            if ( args.length > argOption.getNOptions() && args[argOption.getNOptions()].startsWith("-") ) {
                 bill = processOption(argOption, args, bill);
             }
         }
 
         //Check arguments from command line
-        int argLength = args.length - argOption.getOptionNum();
+        int argLength = args.length - argOption.getNOptions();
         //if the command line arguments has all of the phonebill and phone call arguments
         if ( argLength == 9) {
             //phone call start index
-            int pCallstartIdx = argOption.getOptionNum()+1;
+            int pCallstartIdx = argOption.getNOptions()+1;
             //if the phone bill's customer is null, set customer name from argument
             if (bill!= null && bill.getCustomer().equals(""))
                 bill.setCustomer(args[pCallstartIdx - 1]);
@@ -51,7 +51,7 @@ public class Project3 {
             System.out.println("Phone call is added to Phone bill");
 
             //-pretty option
-            if (argOption.getPrPrintOption()) {
+            if (argOption.getPPrintOption()) {
                 dumpBillPretty(bill, argOption.getPPrintTo());
             }
             //-print option
@@ -98,30 +98,30 @@ public class Project3 {
      */
     private static PhoneBill processOption(Option op, String[] args, PhoneBill bill) {
 
-        boolean prPrintOption = op.getPrPrintOption();
+        boolean pPrintOption = op.getPPrintOption();
         boolean printOption = op.getPrintOption();
         boolean fileOption = op.getFileOption();
-        int optionNum = op.getOptionNum();
+        int nOptions = op.getNOptions();
         String fileName = op.getFileName();
         String pPrintTo = op.getPPrintTo();
 
-        if ( args.length > optionNum && args[optionNum].startsWith("-") ) {
+        if ( args.length > nOptions && args[nOptions].startsWith("-") ) {
 
-            if ( args[optionNum].equals("-README")) {
+            if ( args[nOptions].equals("-README")) {
                 try {
                     printReadmeAndExit();
                 } catch (IOException ie) {
                     System.out.println("IOException");
                 }
             }
-            else if ( args[optionNum].equals("-print")){
+            else if ( args[nOptions].equals("-print")){
                 printOption = true;
             }
-            else if ( args[optionNum].equals("-textFile")){
-                optionNum++;
+            else if ( args[nOptions].equals("-textFile")){
+                nOptions++;
                 //if there is no filename
                 try {
-                    fileName = args[optionNum];
+                    fileName = args[nOptions];
                 } catch (ArrayIndexOutOfBoundsException ex) {
                     printErrorMessageAndExit("Invalid file option: No filename and missing arguments");
                 }
@@ -131,12 +131,12 @@ public class Project3 {
                 }
                 fileOption = true;
             }
-            else if ( args[optionNum].equals("-pretty")){
-                prPrintOption = true;
-                optionNum++;
+            else if ( args[nOptions].equals("-pretty")){
+                pPrintOption = true;
+                nOptions++;
                 //if there is no print to
                 try {
-                    pPrintTo = args[optionNum];
+                    pPrintTo = args[nOptions];
                 } catch (ArrayIndexOutOfBoundsException ex) {
                     printErrorMessageAndExit("Invalid pretty print option: No printTo and missing arguments");
                 }
@@ -144,13 +144,13 @@ public class Project3 {
             else {
                 printErrorMessageAndExit("Invalid option.");
             }
-            optionNum++;
+            nOptions++;
 
-            op.setPrPrintOption(prPrintOption);
+            op.setpPrintOption(pPrintOption);
             op.setPPrintTo(pPrintTo);
             op.setPrintOption(printOption);
             op.setFileOption(fileOption);
-            op.setOptionNum(optionNum);
+            op.setNOptions(nOptions);
             op.setFileName(fileName);
         }
         return bill;

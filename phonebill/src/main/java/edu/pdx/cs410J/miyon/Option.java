@@ -4,17 +4,18 @@ package edu.pdx.cs410J.miyon;
  * The option class for the CS410J Phone Bill Project
  */
 class Option {
-    private boolean prPrintOption;
-    private String pPrintTo;
     private boolean printOption;
     private boolean fileOption;
-    private int optionNum;
+    private boolean pPrintOption;
+    private String pPrintTo;
+    private int nOptions;
     private String fileName;
+
 
     /**
      * Creates a new <code>Option</code>
      *
-     * @param prPrintOption
+     * @param pPrintOption
      *        pretty print option(T/F)
      * @param pPrintTo
      *        pretty print destination
@@ -22,25 +23,25 @@ class Option {
      *        print option(T/F)
      * @param fileOption
      *        file option(T/F)
-     * @param optionNum
+     * @param nOptions
      *        number of option
      * @param fileName
      *        file name from the command line option part
      *
      */
-    Option (boolean prPrintOption, String pPrintTo, boolean printOption, boolean fileOption, int optionNum, String fileName) {
-        this.prPrintOption = prPrintOption;
+    Option (boolean pPrintOption, String pPrintTo, boolean printOption, boolean fileOption, int nOptions, String fileName) {
+        this.pPrintOption = pPrintOption;
         this.pPrintTo = pPrintTo;
         this.printOption = printOption;
         this.fileOption = fileOption;
-        this.optionNum = optionNum;
+        this.nOptions = nOptions;
         this.fileName = fileName;
     }
     /**
      * @return a <code>boolean</code> of pretty print option
      */
-    boolean getPrPrintOption() {
-        return this.prPrintOption;
+    boolean getPPrintOption() {
+        return this.pPrintOption;
     }
     /**
      * @return a <code>String</code> of pretty print to
@@ -63,8 +64,8 @@ class Option {
     /**
      * @return a <code>int</code> of number of options
      */
-    int getOptionNum() {
-        return this.optionNum;
+    int getNOptions() {
+        return this.nOptions;
     }
     /**
      * @return a <code>String</code> of file name
@@ -77,8 +78,8 @@ class Option {
      * @param b
      *       T/F value of pretty print option
      */
-    void setPrPrintOption(boolean b) {
-        this.prPrintOption = b;
+    void setpPrintOption(boolean b) {
+        this.pPrintOption = b;
     }
     /**
      * @param s
@@ -106,8 +107,8 @@ class Option {
      * @param num
      *        number of options
      */
-    void setOptionNum(int num) {
-        this.optionNum = num;
+    void setNOptions(int num) {
+        this.nOptions = num;
     }
     /**
      * @param fName

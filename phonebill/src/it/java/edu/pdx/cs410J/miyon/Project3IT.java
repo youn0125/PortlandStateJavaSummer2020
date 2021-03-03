@@ -307,7 +307,7 @@ public class Project3IT extends InvokeMainTestCase {
         String endTimeAMPM = "am";
         MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime, startTimeAMPM, endDate, endTime, endTimeAMPM);
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("The customer name doesn't match with text file's customer name"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("The bill's customer name doesn't match with text file's customer name"));
     }
 
     @Test

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
@@ -103,6 +105,9 @@ public class PhoneCall extends AbstractPhoneCall {
    */
   @Override
   public String getStartTimeString() {
+    Collection<String> strings = new ArrayList<String>();
+
+
     String startTimeDate = this.startDate + " " + this.startTime + " " + startTimeAMPM;
     Date startDate = parseDate(startTimeDate);
 

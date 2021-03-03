@@ -21,7 +21,7 @@ public class Project3 {
     public static void main(String[] args) {
 
         // Check options from command line
-        Option argOption = new Option(false, null, false, false, 0, null);
+        Option argOption = new Option();
         PhoneBill bill = new PhoneBill("");
 
         for ( int i = 0; i < 4; i++) {
@@ -146,7 +146,7 @@ public class Project3 {
             }
             nOptions++;
 
-            op.setpPrintOption(pPrintOption);
+            op.setPPrintOption(pPrintOption);
             op.setPPrintTo(pPrintTo);
             op.setPrintOption(printOption);
             op.setFileOption(fileOption);

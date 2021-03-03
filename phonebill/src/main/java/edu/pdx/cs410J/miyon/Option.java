@@ -11,7 +11,18 @@ class Option {
     private int nOptions;
     private String fileName;
 
-
+    /**
+     * Creates a new <code>Option</code>
+     *
+     */
+    Option () {
+        this.pPrintOption = false;
+        this.pPrintTo = null;
+        this.printOption = false;
+        this.fileOption = false;
+        this.nOptions = 0;
+        this.fileName = null;
+    }
     /**
      * Creates a new <code>Option</code>
      *
@@ -78,7 +89,7 @@ class Option {
      * @param b
      *       T/F value of pretty print option
      */
-    void setpPrintOption(boolean b) {
+    void setPPrintOption(boolean b) {
         this.pPrintOption = b;
     }
     /**

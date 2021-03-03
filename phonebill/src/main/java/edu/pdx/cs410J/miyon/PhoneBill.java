@@ -17,6 +17,16 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
     /**
      * Creates a new <code>PhoneBill</code>
      *
+     */
+    public PhoneBill() {
+        super();
+        this.customer = "";
+        this.phoneCalls = new TreeSet<>(new PhoneCallComparator());
+    }
+
+    /**
+     * Creates a new <code>PhoneBill</code>
+     *
      * @param customer
      *        Person whose phone bill we’re modeling
      */

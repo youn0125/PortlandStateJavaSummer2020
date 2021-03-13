@@ -20,63 +20,47 @@ public class Project3 {
      */
     public static void main(String[] args) {
 
-        // set options with command line
+        // set option related arguments to Option instance
         Option argOption = new Option();
         PhoneBill bill = new PhoneBill("");
 
         for ( int i = 0; i < MAX_NUM_OF_OPTION; i++) {
             if ( isOptionArgs(args, argOption)) {
-                bill = setOption(argOption, args, bill);
+                setOptionArg(argOption, args, bill);
             }
         }
 
+        // process arguments
         int phoneArgLength = args.length - argOption.getNOptions();
         if ( phoneArgLength == VALID_NUM_OF_PHONE_ARGS) {
             int pCallStartIdx = argOption.getNOptions() + 1;
             String customer = args[pCallStartIdx - 1];
-            if (bill!= null && bill.getCustomer().equals(""))
-                bill.setCustomer(customer);
-            if (argOption.getFileOption() && bill != null && !bill.getCustomer().equals(customer))
+
+            if (argOption.getFileOption()  && !bill.getCustomer().equals(customer))
                 printErrorMessageAndExit("The bill's customer name doesn't match with text file's customer name");
+            if (bill.getCustomer().equals(""))
+                bill.setCustomer(customer);
 
             //Create phone call and add to phone bill
             PhoneCall call = new PhoneCall(args[pCallStartIdx], args[pCallStartIdx+1], args[pCallStartIdx+2],
                     args[pCallStartIdx+3], args[pCallStartIdx+4], args[pCallStartIdx+5], args[pCallStartIdx+6],
-                    args[pCallStartIdx+7] );  // Refer to one of Dave's classes so that we can be sure it is on the classpath
+                    args[pCallStartIdx+7] );
             bill.addPhoneCall(call);
             System.out.println("Phone call is added to Phone bill");
 
-            //-pretty option
+            //process option arguments (-pretty, -print, -textFile)
             if (argOption.getPPrintOption()) {
                 dumpBillPretty(bill, argOption.getPPrintTo());
             }
-            //-print option
             if (argOption.getPrintOption()) {
                 System.out.println(call);
             }
-            //-textFile option
             if ( argOption.getFileOption()) {
                 dumpBill(bill, argOption.getFileName());
             }
-        } else if (phoneArgLength == 0) {
+        } else if (phoneArgLength < 9) {
             printErrorMessageAndExit("Missing command line arguments");
-        } else if (phoneArgLength == 1) {
-            printErrorMessageAndExit("Missing caller");
-        } else if (phoneArgLength == 2) {
-            printErrorMessageAndExit("Missing callee");
-        } else if (phoneArgLength == 3) {
-            printErrorMessageAndExit("Missing start date");
-        }  else if (phoneArgLength == 4) {
-            printErrorMessageAndExit("Missing start time");
-        }  else if (phoneArgLength == 5) {
-            printErrorMessageAndExit("Missing start time am/pm");
-        }  else if (phoneArgLength == 6) {
-            printErrorMessageAndExit("Missing end date");
-        }  else if (phoneArgLength == 7) {
-            printErrorMessageAndExit("Missing end time");
-        }  else if (phoneArgLength == 8) {
-            printErrorMessageAndExit("Missing end time am/pm");
-        }  else if (phoneArgLength > 9) {
+        } else if (phoneArgLength > 9) {
             printErrorMessageAndExit("There are extraneous arguments");
         }
     }
@@ -99,7 +83,7 @@ public class Project3 {
      *        <code>PhoneBill</code>
      * @return <code>PhoneBill</code>
      */
-    private static PhoneBill setOption(Option op, String[] args, PhoneBill bill) {
+    private static void setOptionArg(Option op, String[] args, PhoneBill bill) {
         int nOptions = op.getNOptions();
 
         if ( args[nOptions].equals("-README")) {
@@ -108,47 +92,37 @@ public class Project3 {
             } catch (IOException ie) {
                 System.out.println("IOException");
             }
-        }
-        else if ( args[nOptions].equals("-print")){
-            boolean printOption = true;
-            op.setPrintOption(printOption);
-        }
-        else if ( args[nOptions].equals("-textFile")){
-            boolean fileOption = false;
+        } else if ( args[nOptions].equals("-print")){
+            op.setPrintOption(true);
+        } else if ( args[nOptions].equals("-textFile")){
             String fileName = "";
             nOptions++;
-            //if there is no filename
+            //if there is no file
             try {
                 fileName = args[nOptions];
                 op.setFileName(fileName);
             } catch (ArrayIndexOutOfBoundsException ex) {
-                printErrorMessageAndExit("Invalid file option: No filename and missing arguments");
+                printErrorMessageAndExit("Invalid file option: No file and missing arguments");
             }
 
             bill = parseTextFile(fileName);
-            fileOption = true;
-            op.setFileOption(fileOption);
-        }
-        else if ( args[nOptions].equals("-pretty")){
-            boolean pPrintOption = true;
+            op.setFileOption(true);
+        } else if ( args[nOptions].equals("-pretty")){
             String pPrintTo = "";
             nOptions++;
             //if there is no print to
             try {
                 pPrintTo = args[nOptions];
-                op.setPPrintOption(pPrintOption);
+                op.setPPrintOption(true);
                 op.setPPrintTo(pPrintTo);
             } catch (ArrayIndexOutOfBoundsException ex) {
                 printErrorMessageAndExit("Invalid pretty print option: No printTo and missing arguments");
             }
-        }
-        else {
+        } else {
             printErrorMessageAndExit("Invalid option.");
         }
         nOptions++;
         op.setNOptions(nOptions);
-
-        return bill;
     }
 
     /**

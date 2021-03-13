@@ -45,35 +45,35 @@ public class Project3IT extends InvokeMainTestCase {
     public void testOneCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing caller"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
     @Test
     public void testTwoCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing callee"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
     @Test
     public void testThreeCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing start date"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
     @Test
     public void testFourCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin",  "234-567-8901", "123-456-7890","01/23/2020");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing start time"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
     @Test
     public void testFiveCommandLineArguments() {
         MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890","01/23/2020", "09:12");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing start time am/pm"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class Project3IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890","01/23/2020",
                 "09:12", "am");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing end date"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class Project3IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890","01/23/2020",
                 "09:12", "am", "01/23/2020");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing end time"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class Project3IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain("Brian Griffin", "234-567-8901", "123-456-7890","01/23/2020",
                 "09:12", "am", "01/23/2020", "12:12");
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Missing end time am/pm"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
     }
 
     @Test

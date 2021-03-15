@@ -4,7 +4,6 @@ import edu.pdx.cs410J.PhoneBillDumper;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

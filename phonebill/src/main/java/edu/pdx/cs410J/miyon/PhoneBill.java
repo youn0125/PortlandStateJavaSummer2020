@@ -5,7 +5,6 @@ import edu.pdx.cs410J.AbstractPhoneBill;
 import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Vector;
 
 /**
  * This class is represents a <code>PhoneBill</code>.

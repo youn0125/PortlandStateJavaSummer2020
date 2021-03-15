@@ -14,7 +14,7 @@ import static edu.pdx.cs410J.miyon.Project3.printErrorMessageAndExit;
  */
 public class TextParser implements PhoneBillParser<PhoneBill> {
     private final Reader reader;
-
+    private final int VALID_NUM_OF_PHONE_CALL_ARGS = 8;
     /**
      * Creates a new <code>TextParser</code>
      *
@@ -39,14 +39,14 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
             String phoneCallStr = br.readLine();
             while (phoneCallStr != null) {
                 String[] phoneCallArgs = phoneCallStr.split(" ");
-                if (phoneCallArgs.length == 8) {
+                if (phoneCallArgs.length == VALID_NUM_OF_PHONE_CALL_ARGS) {
                     PhoneCall call = new PhoneCall(phoneCallArgs[0], phoneCallArgs[1], phoneCallArgs[2], phoneCallArgs[3],
                             phoneCallArgs[4], phoneCallArgs[5], phoneCallArgs[6], phoneCallArgs[7]);
                     bill.addPhoneCall(call);
                 } else {
                     br.close();
                     reader.close();
-                    printErrorMessageAndExit("Text file has malformatted phone call");
+                    printErrorMessageAndExit("Text file has mal-formatted phone call");
                 }
                 phoneCallStr = br.readLine();
             }

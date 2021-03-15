@@ -169,7 +169,6 @@ public class Project3IT extends InvokeMainTestCase {
                 call.getDurationMinute() + " minutes."));
     }
 
-    @Ignore
     @Test
     public void testNineCommandLineArgumentsWithPrPrintOptionToFile() {
         String pretty = "-pretty";
@@ -237,7 +236,7 @@ public class Project3IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(),
                 containsString("Invalid pretty print option: No printTo and missing arguments"));
     }
-    @Ignore
+
     @Test
     public void testTextFileOptionFileNotExist() {
         String textFile = "-textFile";
@@ -254,7 +253,7 @@ public class Project3IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime,
                 startTimeAMPM, endDate, endTime, endTimeAMPM);
     }
-    @Ignore
+
     @Test
     public void testTextFileOptionFileExist() {
         String textFile = "-textFile";
@@ -289,7 +288,7 @@ public class Project3IT extends InvokeMainTestCase {
         MainMethodResult result = invokeMain(textFile, fileName, customer, caller, callee, startDate, startTime,
                 startTimeAMPM, endDate, endTime, endTimeAMPM);
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Text file has malformatted phone call"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Text file has mal-formatted phone call"));
     }
 
     @Test

@@ -26,7 +26,7 @@ public class Project3 {
 
         for ( int i = 0; i < MAX_NUM_OF_OPTION; i++) {
             if ( isOptionArgs(args, argOption)) {
-                setOptionArg(argOption, args, bill);
+                bill = setOptionArg(argOption, args, bill);
             }
         }
 
@@ -36,10 +36,11 @@ public class Project3 {
             int pCallStartIdx = argOption.getNOptions() + 1;
             String customer = args[pCallStartIdx - 1];
 
-            if (argOption.getFileOption()  && !bill.getCustomer().equals(customer))
-                printErrorMessageAndExit("The bill's customer name doesn't match with text file's customer name");
             if (bill.getCustomer().equals(""))
                 bill.setCustomer(customer);
+            if (argOption.getFileOption()  && !bill.getCustomer().equals(customer))
+                printErrorMessageAndExit("The bill's customer name doesn't match with text file's customer name");
+
 
             //Create phone call and add to phone bill
             PhoneCall call = new PhoneCall(args[pCallStartIdx], args[pCallStartIdx+1], args[pCallStartIdx+2],
@@ -83,7 +84,7 @@ public class Project3 {
      *        <code>PhoneBill</code>
      * @return <code>PhoneBill</code>
      */
-    private static void setOptionArg(Option op, String[] args, PhoneBill bill) {
+    private static PhoneBill setOptionArg(Option op, String[] args, PhoneBill bill) {
         int nOptions = op.getNOptions();
 
         if ( args[nOptions].equals("-README")) {
@@ -97,7 +98,6 @@ public class Project3 {
         } else if ( args[nOptions].equals("-textFile")){
             String fileName = "";
             nOptions++;
-            //if there is no file
             try {
                 fileName = args[nOptions];
                 op.setFileName(fileName);
@@ -123,6 +123,7 @@ public class Project3 {
         }
         nOptions++;
         op.setNOptions(nOptions);
+        return bill;
     }
 
     /**

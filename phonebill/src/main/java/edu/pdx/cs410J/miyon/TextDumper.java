@@ -26,14 +26,15 @@ public class TextDumper implements PhoneBillDumper<PhoneBill> {
      */
     @Override
     public void dump(PhoneBill bill) throws IOException {
+        BufferedWriter bw = new BufferedWriter(this.writer);
         try {
-            this.writer.write(bill.getCustomer() +"\n");
+            bw.write(bill.getCustomer() +"\n");
             Collection<PhoneCall> calls = bill.getPhoneCalls();
             for ( PhoneCall call : calls) {
-                this.writer.write(call.getCaller() + " " + call.getCallee() + " " +
+                bw.write(call.getCaller() + " " + call.getCallee() + " " +
                         call.getStartTimeStringFromCommandLine() + " " + call.getEndTimeStringFromCommandLine() +"\n");
             }
-
+            bw.close();
             writer.close();
         } catch (IOException e) {
             throw new IOException("While dumping text", e);
